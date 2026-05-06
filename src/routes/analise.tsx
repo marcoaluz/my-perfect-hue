@@ -1,52 +1,94 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Camera, ImageIcon, Sparkles, Sun } from "lucide-react";
+import { Camera, ImageIcon, Sparkles, Sun, ArrowRight } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { SkinPicker } from "@/components/SkinPicker";
+import { analyzeRegion, type SubtomResult } from "@/lib/skin-analyzer";
 
 export const Route = createFileRoute("/analise")({
   component: Analise,
   head: () => ({ meta: [{ title: "Análise — Meu Tom Perfeito" }] }),
 });
 
-type State = "intro" | "loading" | "result";
-
-const matches = ["#C97B63", "#E8B4B8", "#D4AF8C", "#A8B5A0", "#8B5A3C"];
-const avoids = ["#FF00FF", "#000080", "#C0C0C0", "#FFFF00", "#00FF00"];
+type Step = "intro" | "picker" | "loading" | "result";
 
 function Analise() {
   const { user, loading } = useRequireAuth();
   const qc = useQueryClient();
-  const [state, setState] = useState<State>("intro");
+  const [step, setStep] = useState<Step>("intro");
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [region, setRegion] = useState<{ canvas: HTMLCanvasElement; cx: number; cy: number; radius: number } | null>(null);
+  const [result, setResult] = useState<SubtomResult | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
 
-  const start = async () => {
-    setState("loading");
-    setTimeout(async () => {
-      const subtom = "Quente · Outono";
-      const { error } = await supabase.from("analises").insert({
-        user_id: user!.id,
-        subtom_detectado: subtom,
-        paleta: { cores: matches, evitar: avoids },
-        confianca: 0.92,
-      });
-      if (error) {
-        toast.error(error.message);
-        setState("intro");
-        return;
+  const onFile = (f: File | null) => {
+    if (!f) return;
+    setImageFile(f);
+    setImageUrl(URL.createObjectURL(f));
+    setStep("picker");
+  };
+
+  const analisar = async () => {
+    if (!region || !user) return;
+    setStep("loading");
+    try {
+      // pequeno delay para a animação
+      await new Promise((r) => setTimeout(r, 900));
+      const r = analyzeRegion(region.canvas, region.cx, region.cy, region.radius);
+      setResult(r);
+
+      // upload opcional da foto
+      let foto_url: string | null = null;
+      if (imageFile) {
+        const ext = imageFile.name.split(".").pop() || "jpg";
+        const path = `${user.id}/${Date.now()}.${ext}`;
+        const { error: upErr } = await supabase.storage.from("fotos").upload(path, imageFile, { upsert: true });
+        if (!upErr) foto_url = path;
       }
+
+      const { error } = await supabase.from("analises").insert({
+        user_id: user.id,
+        foto_url,
+        subtom_detectado: r.subtom,
+        paleta: {
+          sazonal: r.paleta_sazonal,
+          cores: r.cores_que_combinam,
+          evitar: r.cores_a_evitar,
+          rgb: r.rgb,
+          hsv: r.hsv,
+        },
+        confianca: r.confianca,
+      });
+      if (error) throw error;
+
       await supabase
         .from("profiles")
-        .update({ subtom: subtom, paleta_sazonal: "Outono" })
-        .eq("id", user!.id);
+        .update({ subtom: r.subtom, paleta_sazonal: r.paleta_sazonal })
+        .eq("id", user.id);
+
       qc.invalidateQueries();
-      setState("result");
-    }, 2000);
+      setStep("result");
+    } catch (e) {
+      console.error(e);
+      toast.error("Não foi possível concluir a análise.");
+      setStep("picker");
+    }
+  };
+
+  const reset = () => {
+    setStep("intro");
+    setImageUrl(null);
+    setImageFile(null);
+    setRegion(null);
+    setResult(null);
   };
 
   if (loading || !user) return null;
@@ -54,9 +96,18 @@ function Analise() {
   return (
     <>
       <MobileShell>
-        <PageHeader eyebrow="IA" title="Análise de subtom" subtitle="Sua paleta personalizada em segundos" />
+        <PageHeader eyebrow="IA local" title="Análise de subtom" subtitle="100% no seu dispositivo, sem enviar dados" />
 
-        {state === "intro" && (
+        <input
+          ref={fileRef}
+          type="file"
+          accept="image/*"
+          capture="environment"
+          hidden
+          onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+        />
+
+        {step === "intro" && (
           <>
             <Card className="rounded-3xl p-6 mb-5 border-border/60 shadow-soft bg-gradient-soft">
               <div className="flex items-start gap-3 mb-4">
@@ -64,7 +115,7 @@ function Analise() {
                 <div>
                   <p className="font-medium">Como tirar a foto perfeita</p>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Tire foto do seu pulso em local com luz natural, sem maquiagem ou filtros.
+                    Foto do pulso ou bochecha em luz natural, sem maquiagem ou filtros.
                   </p>
                 </div>
               </div>
@@ -74,17 +125,34 @@ function Analise() {
             </Card>
 
             <div className="space-y-3">
-              <Button size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft" onClick={start}>
+              <Button size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft" onClick={() => fileRef.current?.click()}>
                 <Camera className="h-4 w-4" /> Tirar foto
               </Button>
-              <Button size="lg" variant="outline" className="w-full rounded-full" onClick={start}>
+              <Button size="lg" variant="outline" className="w-full rounded-full" onClick={() => fileRef.current?.click()}>
                 <ImageIcon className="h-4 w-4" /> Escolher da galeria
               </Button>
             </div>
           </>
         )}
 
-        {state === "loading" && (
+        {step === "picker" && imageUrl && (
+          <>
+            <Card className="rounded-3xl p-4 mb-4 border-border/60 shadow-soft">
+              <p className="text-sm text-muted-foreground mb-3">
+                Arraste o círculo até a área da pele e ajuste o tamanho.
+              </p>
+              <SkinPicker imageUrl={imageUrl} onChange={setRegion} />
+            </Card>
+            <div className="flex gap-2">
+              <Button variant="outline" className="flex-1 rounded-full" onClick={reset}>Trocar foto</Button>
+              <Button className="flex-1 rounded-full bg-gradient-primary shadow-soft" onClick={analisar}>
+                Analisar <ArrowRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </>
+        )}
+
+        {step === "loading" && (
           <div className="flex flex-col items-center justify-center py-20 text-center">
             <div className="relative mb-8">
               <div className="h-32 w-32 rounded-full bg-gradient-primary animate-pulse" />
@@ -95,20 +163,24 @@ function Analise() {
           </div>
         )}
 
-        {state === "result" && (
-          <>
+        {step === "result" && result && (
+          <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
             <Card className="rounded-3xl p-6 mb-5 bg-gradient-primary border-0 text-primary-foreground shadow-card">
               <p className="text-xs uppercase tracking-[0.2em] opacity-90">Seu subtom</p>
-              <h2 className="font-serif text-3xl mt-1">Quente · Outono</h2>
-              <p className="text-sm opacity-90 mt-2">
-                Tons terrosos, dourados e aconchegantes harmonizam com sua pele.
+              <h2 className="font-serif text-3xl mt-1">{result.paleta_sazonal}</h2>
+              <p className="text-sm opacity-90 mt-2 capitalize">
+                {result.subtom.replace("_", " · ")} — confiança {Math.round(result.confianca * 100)}%
               </p>
+              <div className="mt-4 flex items-center gap-3 text-xs opacity-90">
+                <span className="h-6 w-6 rounded-full border border-white/40" style={{ background: `rgb(${result.rgb.r},${result.rgb.g},${result.rgb.b})` }} />
+                Tom médio detectado na pele
+              </div>
             </Card>
 
             <Card className="rounded-3xl p-5 mb-4 border-border/60 shadow-soft">
               <p className="font-serif text-lg mb-3">Cores que te valorizam</p>
               <div className="flex gap-2">
-                {matches.map((c) => (
+                {result.cores_que_combinam.map((c) => (
                   <div key={c} className="flex-1 aspect-square rounded-2xl shadow-sm" style={{ background: c }} />
                 ))}
               </div>
@@ -117,16 +189,16 @@ function Analise() {
             <Card className="rounded-3xl p-5 mb-4 border-border/60 shadow-soft">
               <p className="font-serif text-lg mb-3">Cores para evitar</p>
               <div className="flex gap-2">
-                {avoids.map((c) => (
+                {result.cores_a_evitar.map((c) => (
                   <div key={c} className="flex-1 aspect-square rounded-2xl shadow-sm opacity-70" style={{ background: c }} />
                 ))}
               </div>
             </Card>
 
-            <Button className="w-full rounded-full" variant="outline" onClick={() => setState("intro")}>
+            <Button className="w-full rounded-full" variant="outline" onClick={reset}>
               Refazer análise
             </Button>
-          </>
+          </div>
         )}
       </MobileShell>
       <BottomNav />
