@@ -14,7 +14,120 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      analises: {
+        Row: {
+          confianca: number | null
+          created_at: string
+          foto_url: string | null
+          id: string
+          paleta: Json | null
+          subtom_detectado: string | null
+          user_id: string
+        }
+        Insert: {
+          confianca?: number | null
+          created_at?: string
+          foto_url?: string | null
+          id?: string
+          paleta?: Json | null
+          subtom_detectado?: string | null
+          user_id: string
+        }
+        Update: {
+          confianca?: number | null
+          created_at?: string
+          foto_url?: string | null
+          id?: string
+          paleta?: Json | null
+          subtom_detectado?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      looks: {
+        Row: {
+          created_at: string
+          favorito: boolean
+          id: string
+          ocasiao: string | null
+          pecas: string[]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          favorito?: boolean
+          id?: string
+          ocasiao?: string | null
+          pecas?: string[]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          favorito?: boolean
+          id?: string
+          ocasiao?: string | null
+          pecas?: string[]
+          user_id?: string
+        }
+        Relationships: []
+      }
+      pecas_roupa: {
+        Row: {
+          categoria: string | null
+          combina_com_subtom: boolean | null
+          cor_hex: string | null
+          created_at: string
+          foto_url: string | null
+          id: string
+          user_id: string
+        }
+        Insert: {
+          categoria?: string | null
+          combina_com_subtom?: boolean | null
+          cor_hex?: string | null
+          created_at?: string
+          foto_url?: string | null
+          id?: string
+          user_id: string
+        }
+        Update: {
+          categoria?: string | null
+          combina_com_subtom?: boolean | null
+          cor_hex?: string | null
+          created_at?: string
+          foto_url?: string | null
+          id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          id: string
+          nome: string | null
+          paleta_sazonal: string | null
+          plano: string
+          subtom: string | null
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          nome?: string | null
+          paleta_sazonal?: string | null
+          plano?: string
+          subtom?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nome?: string | null
+          paleta_sazonal?: string | null
+          plano?: string
+          subtom?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
