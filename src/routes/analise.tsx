@@ -1,10 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Camera, ImageIcon, Sparkles, Sun } from "lucide-react";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/analise")({
   component: Analise,
@@ -17,12 +21,35 @@ const matches = ["#C97B63", "#E8B4B8", "#D4AF8C", "#A8B5A0", "#8B5A3C"];
 const avoids = ["#FF00FF", "#000080", "#C0C0C0", "#FFFF00", "#00FF00"];
 
 function Analise() {
+  const { user, loading } = useRequireAuth();
+  const qc = useQueryClient();
   const [state, setState] = useState<State>("intro");
 
-  const start = () => {
+  const start = async () => {
     setState("loading");
-    setTimeout(() => setState("result"), 2200);
+    setTimeout(async () => {
+      const subtom = "Quente · Outono";
+      const { error } = await supabase.from("analises").insert({
+        user_id: user!.id,
+        subtom_detectado: subtom,
+        paleta: { cores: matches, evitar: avoids },
+        confianca: 0.92,
+      });
+      if (error) {
+        toast.error(error.message);
+        setState("intro");
+        return;
+      }
+      await supabase
+        .from("profiles")
+        .update({ subtom: subtom, paleta_sazonal: "Outono" })
+        .eq("id", user!.id);
+      qc.invalidateQueries();
+      setState("result");
+    }, 2000);
   };
+
+  if (loading || !user) return null;
 
   return (
     <>
