@@ -1,8 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Sparkles } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/login")({
   component: Login,
@@ -10,6 +15,30 @@ export const Route = createFileRoute("/login")({
 });
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
+  useEffect(() => {
+    if (user) navigate({ to: "/" });
+  }, [user, navigate]);
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
+    setLoading(false);
+    if (error) toast.error(error.message);
+    else navigate({ to: "/" });
+  };
+
+  const onGoogle = async () => {
+    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin });
+    if (result.error) toast.error("Erro ao entrar com Google");
+  };
+
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-6 py-10">
       <div className="mb-10 text-center">
@@ -20,17 +49,17 @@ function Login() {
         <p className="text-sm text-muted-foreground mt-2">Entre para descobrir suas cores</p>
       </div>
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={onSubmit}>
         <div>
           <Label htmlFor="email">E-mail</Label>
-          <Input id="email" type="email" placeholder="voce@email.com" className="rounded-xl mt-1.5" />
+          <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="voce@email.com" className="rounded-xl mt-1.5" />
         </div>
         <div>
           <Label htmlFor="senha">Senha</Label>
-          <Input id="senha" type="password" placeholder="••••••••" className="rounded-xl mt-1.5" />
+          <Input id="senha" type="password" required value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="••••••••" className="rounded-xl mt-1.5" />
         </div>
-        <Button asChild size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft">
-          <Link to="/">Entrar</Link>
+        <Button type="submit" disabled={loading} size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft">
+          {loading ? "Entrando..." : "Entrar"}
         </Button>
       </form>
 
@@ -40,7 +69,7 @@ function Login() {
         <div className="h-px flex-1 bg-border" />
       </div>
 
-      <Button variant="outline" size="lg" className="w-full rounded-full">
+      <Button variant="outline" size="lg" className="w-full rounded-full" onClick={onGoogle}>
         Continuar com Google
       </Button>
 

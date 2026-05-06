@@ -1,7 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/cadastro")({
   component: Cadastro,
@@ -9,6 +12,32 @@ export const Route = createFileRoute("/cadastro")({
 });
 
 function Cadastro() {
+  const [nome, setNome] = useState("");
+  const [email, setEmail] = useState("");
+  const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const onSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password: senha,
+      options: {
+        emailRedirectTo: `${window.location.origin}/onboarding`,
+        data: { nome },
+      },
+    });
+    setLoading(false);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Conta criada! Verifique seu e-mail para confirmar.");
+    navigate({ to: "/onboarding" });
+  };
+
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-6 py-10">
       <div className="mb-8">
@@ -16,21 +45,21 @@ function Cadastro() {
         <p className="text-sm text-muted-foreground mt-1">Leva menos de um minuto ✨</p>
       </div>
 
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={onSubmit}>
         <div>
           <Label htmlFor="nome">Nome</Label>
-          <Input id="nome" placeholder="Seu nome" className="rounded-xl mt-1.5" />
+          <Input id="nome" required value={nome} onChange={(e) => setNome(e.target.value)} placeholder="Seu nome" className="rounded-xl mt-1.5" />
         </div>
         <div>
           <Label htmlFor="email">E-mail</Label>
-          <Input id="email" type="email" placeholder="voce@email.com" className="rounded-xl mt-1.5" />
+          <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="voce@email.com" className="rounded-xl mt-1.5" />
         </div>
         <div>
           <Label htmlFor="senha">Senha</Label>
-          <Input id="senha" type="password" placeholder="••••••••" className="rounded-xl mt-1.5" />
+          <Input id="senha" type="password" required minLength={6} value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="••••••••" className="rounded-xl mt-1.5" />
         </div>
-        <Button asChild size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft mt-2">
-          <Link to="/onboarding">Criar conta</Link>
+        <Button type="submit" disabled={loading} size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft mt-2">
+          {loading ? "Criando..." : "Criar conta"}
         </Button>
       </form>
 
