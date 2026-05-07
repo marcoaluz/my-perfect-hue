@@ -60,9 +60,12 @@ function Analise() {
         subtom_detectado: r.subtom,
         paleta: {
           sazonal: r.paleta_sazonal,
+          estacao: r.estacao,
+          profundidade: r.profundidade,
           cores: r.cores_que_combinam,
           evitar: r.cores_a_evitar,
           rgb: r.rgb,
+          lab: r.lab,
           hsv: r.hsv,
         },
         confianca: r.confianca,
@@ -168,13 +171,24 @@ function Analise() {
             <Card className="rounded-3xl p-6 mb-5 bg-gradient-primary border-0 text-primary-foreground shadow-card">
               <p className="text-xs uppercase tracking-[0.2em] opacity-90">Seu subtom</p>
               <h2 className="font-serif text-3xl mt-1">{result.paleta_sazonal}</h2>
-              <p className="text-sm opacity-90 mt-2 capitalize">
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="bg-white/15 backdrop-blur rounded-full px-3 py-1 text-xs capitalize">
+                  Profundidade: {result.profundidade}
+                </span>
+                <span className="bg-white/15 backdrop-blur rounded-full px-3 py-1 text-xs capitalize">
+                  {result.estacao}
+                </span>
+              </div>
+              <p className="text-sm opacity-90 mt-3 capitalize">
                 {result.subtom.replace("_", " · ")} — confiança {Math.round(result.confianca * 100)}%
               </p>
               <div className="mt-4 flex items-center gap-3 text-xs opacity-90">
                 <span className="h-6 w-6 rounded-full border border-white/40" style={{ background: `rgb(${result.rgb.r},${result.rgb.g},${result.rgb.b})` }} />
                 Tom médio detectado na pele
               </div>
+              <p className="text-xs opacity-75 mt-2">
+                L*={result.lab.L} · a*={result.lab.a} · b*={result.lab.b}
+              </p>
             </Card>
 
             <Card className="rounded-3xl p-5 mb-4 border-border/60 shadow-soft">
@@ -193,6 +207,12 @@ function Analise() {
                   <div key={c} className="flex-1 aspect-square rounded-2xl shadow-sm opacity-70" style={{ background: c }} />
                 ))}
               </div>
+            </Card>
+
+            <Card className="rounded-3xl p-5 mb-4 bg-secondary/40 border-border/40">
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                💡 Análise feita por algoritmo de visão computacional rodando 100% no seu dispositivo. A iluminação influencia o resultado — para máxima precisão, refaça em luz natural. Em breve, análise Premium com IA avançada para casos especiais.
+              </p>
             </Card>
 
             <Button className="w-full rounded-full" variant="outline" onClick={reset}>
