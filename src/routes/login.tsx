@@ -21,17 +21,31 @@ function Login() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const routeAfterLogin = async (userId: string) => {
+    const { data } = await supabase
+      .from("profiles")
+      .select("onboarding_completed")
+      .eq("id", userId)
+      .maybeSingle();
+    if (data?.onboarding_completed) navigate({ to: "/" });
+    else navigate({ to: "/onboarding" });
+  };
+
   useEffect(() => {
-    if (user) navigate({ to: "/" });
-  }, [user, navigate]);
+    if (user) routeAfterLogin(user.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password: senha });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: senha });
     setLoading(false);
-    if (error) toast.error(error.message);
-    else navigate({ to: "/" });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    if (data.user) await routeAfterLogin(data.user.id);
   };
 
   const onGoogle = async () => {
