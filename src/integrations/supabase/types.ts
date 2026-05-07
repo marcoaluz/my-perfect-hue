@@ -106,6 +106,7 @@ export type Database = {
           created_at: string
           id: string
           nome: string | null
+          onboarding_completed: boolean
           paleta_sazonal: string | null
           plano: string
           subtom: string | null
@@ -114,6 +115,7 @@ export type Database = {
           created_at?: string
           id: string
           nome?: string | null
+          onboarding_completed?: boolean
           paleta_sazonal?: string | null
           plano?: string
           subtom?: string | null
@@ -122,6 +124,7 @@ export type Database = {
           created_at?: string
           id?: string
           nome?: string | null
+          onboarding_completed?: boolean
           paleta_sazonal?: string | null
           plano?: string
           subtom?: string | null
