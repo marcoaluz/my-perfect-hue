@@ -211,7 +211,7 @@ function Analise() {
 
             <Card className="rounded-3xl p-5 mb-4 bg-secondary/40 border-border/40">
               <p className="text-xs text-muted-foreground leading-relaxed">
-                💡 Análise feita por algoritmo de visão computacional rodando 100% no seu dispositivo. A iluminação influencia o resultado — para máxima precisão, refaça em luz natural. Em breve, análise Premium com IA avançada para casos especiais.
+                💡 Esta é uma análise por algoritmo de visão computacional. A iluminação do ambiente influencia o resultado — para máxima precisão, refaça em luz natural. Para análise ainda mais detalhada, em breve teremos o plano Premium com IA avançada.
               </p>
             </Card>
 
