@@ -21,7 +21,7 @@ function Cadastro() {
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { error: signUpError } = await supabase.auth.signUp({
       email,
       password: senha,
       options: {
@@ -29,12 +29,31 @@ function Cadastro() {
         data: { nome },
       },
     });
-    setLoading(false);
-    if (error) {
-      toast.error(error.message);
+    if (signUpError) {
+      setLoading(false);
+      const msg = signUpError.message?.toLowerCase() ?? "";
+      if (
+        msg.includes("already registered") ||
+        msg.includes("already exists") ||
+        msg.includes("user already")
+      ) {
+        toast.error("Esse email já está cadastrado. Tente fazer login.");
+      } else {
+        toast.error(signUpError.message);
+      }
       return;
     }
-    toast.success("Conta criada! Verifique seu e-mail para confirmar.");
+
+    const { error: signInError } = await supabase.auth.signInWithPassword({
+      email,
+      password: senha,
+    });
+    setLoading(false);
+    if (signInError) {
+      toast.error(signInError.message);
+      return;
+    }
+    toast.success("Bem-vinda! Vamos começar ✨");
     navigate({ to: "/onboarding" });
   };
 

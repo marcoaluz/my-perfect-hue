@@ -1,7 +1,11 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkles, Palette, Shirt } from "lucide-react";
+import { useRequireAuth } from "@/hooks/useRequireAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/onboarding")({
   component: Onboarding,
@@ -26,16 +30,47 @@ const slides = [
 ];
 
 function Onboarding() {
+  const { user } = useRequireAuth();
   const [step, setStep] = useState(0);
+  const [saving, setSaving] = useState(false);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const slide = slides[step];
   const Icon = slide.icon;
   const isLast = step === slides.length - 1;
 
+  const completeOnboarding = async (to: "/analise" | "/") => {
+    if (!user) return;
+    setSaving(true);
+    const { error } = await supabase
+      .from("profiles")
+      .update({ onboarding_completed: true })
+      .eq("id", user.id);
+    setSaving(false);
+    if (error) {
+      toast.error("Não foi possível concluir o onboarding.");
+      return;
+    }
+    await queryClient.invalidateQueries({ queryKey: ["profile", user.id] });
+    navigate({ to });
+  };
+
+  const onPrimary = () => {
+    if (isLast) completeOnboarding("/analise");
+    else setStep(step + 1);
+  };
+
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-6 py-10">
       <div className="flex justify-end">
-        <Link to="/" className="text-sm text-muted-foreground">Pular</Link>
+        <button
+          type="button"
+          onClick={() => completeOnboarding("/")}
+          disabled={saving}
+          className="text-sm text-muted-foreground"
+        >
+          Pular
+        </button>
       </div>
       <div className="flex flex-1 flex-col items-center justify-center text-center">
         <div className="mb-10 flex h-40 w-40 items-center justify-center rounded-full bg-gradient-primary shadow-card">
@@ -54,10 +89,11 @@ function Onboarding() {
       </div>
       <Button
         size="lg"
+        disabled={saving}
         className="rounded-full bg-gradient-primary shadow-soft"
-        onClick={() => (isLast ? navigate({ to: "/analise" }) : setStep(step + 1))}
+        onClick={onPrimary}
       >
-        {isLast ? "Começar análise" : "Continuar"}
+        {isLast ? (saving ? "Salvando..." : "Começar análise") : "Continuar"}
       </Button>
     </div>
   );
