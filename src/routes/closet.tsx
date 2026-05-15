@@ -1,18 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Check, X } from "lucide-react";
+import { Plus, Check, X, Camera } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { corCombinaComSubtom } from "@/lib/color-matcher";
+import { extractDominantColor, resizeImage } from "@/lib/color-extractor";
 
 export const Route = createFileRoute("/closet")({
   component: Closet,
@@ -29,6 +29,10 @@ function Closet() {
   const [cat, setCat] = useState("Todas");
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ categoria: "Blusas", cor_hex: "#C97B63" });
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [detectingColor, setDetectingColor] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<"idle" | "uploading" | "done">("idle");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: items = [] } = useQuery({
     queryKey: ["pecas", user?.id],
@@ -51,26 +55,76 @@ function Closet() {
     return true;
   });
 
-  const adicionar = async (e: React.FormEvent) => {
-    e.preventDefault();
-    const match = corCombinaComSubtom(
-      form.cor_hex,
-      profile?.subtom,
-      profile?.paleta_sazonal,
-    );
+  const resetForm = () => {
+    setPreviewUrl(null);
+    setForm({ categoria: "Blusas", cor_hex: "#C97B63" });
+    setDetectingColor(false);
+    setUploadProgress("idle");
+  };
+
+  const onFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setDetectingColor(true);
+    const objectUrl = URL.createObjectURL(file);
+    setPreviewUrl(objectUrl);
+    try {
+      const result = await extractDominantColor(objectUrl);
+      setForm((f) => ({ ...f, cor_hex: result.hex }));
+      toast.success(`Cor detectada: ${result.hex}`);
+    } catch {
+      toast.error("Não consegui detectar a cor. Ajuste manualmente.");
+    } finally {
+      setDetectingColor(false);
+    }
+  };
+
+  const adicionar = async () => {
+    if (!user) return;
+    setUploadProgress("uploading");
+    let foto_url: string | null = null;
+
+    if (previewUrl) {
+      try {
+        const response = await fetch(previewUrl);
+        const blob = await response.blob();
+        const file = new File([blob], "peca.jpg", { type: "image/jpeg" });
+        const resized = await resizeImage(file, 800, 0.85);
+        const fileName = `${user.id}/${Date.now()}.jpg`;
+        const { error: uploadError } = await supabase.storage
+          .from("fotos")
+          .upload(fileName, resized, { contentType: "image/jpeg", upsert: false });
+        if (uploadError) throw uploadError;
+        const { data: urlData } = supabase.storage.from("fotos").getPublicUrl(fileName);
+        foto_url = urlData.publicUrl;
+      } catch (err: any) {
+        toast.error("Erro ao salvar foto: " + err.message);
+        setUploadProgress("idle");
+        return;
+      }
+    }
+
+    const match = corCombinaComSubtom(form.cor_hex, profile?.subtom, profile?.paleta_sazonal);
+
     const { error } = await supabase.from("pecas_roupa").insert({
-      user_id: user!.id,
+      user_id: user.id,
       categoria: form.categoria,
       cor_hex: form.cor_hex,
+      foto_url,
       combina_com_subtom: match.combina,
     });
+
+    setUploadProgress("idle");
     if (error) return toast.error(error.message);
+
     toast.success(
       match.combina
         ? `Peça adicionada — ${match.motivo} ✨`
         : `Peça adicionada — ${match.motivo}`,
     );
+
     setOpen(false);
+    resetForm();
     qc.invalidateQueries({ queryKey: ["pecas"] });
   };
 
@@ -117,7 +171,17 @@ function Closet() {
           <div className="grid grid-cols-2 gap-3">
             {filtered.map((i) => (
               <Card key={i.id} className="rounded-2xl p-3 border-border/60 shadow-soft hover:scale-[1.02] transition-transform">
-                <div className="aspect-square rounded-xl mb-3" style={{ background: i.cor_hex || "#E8B4B8" }} />
+                <div className="relative aspect-square rounded-xl mb-3 overflow-hidden">
+                  {i.foto_url ? (
+                    <img src={i.foto_url} alt={i.categoria || "peça"} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
+                  ) : (
+                    <div className="absolute inset-0" style={{ background: i.cor_hex || "#E8B4B8" }} />
+                  )}
+                  <span
+                    className="absolute bottom-1.5 right-1.5 h-5 w-5 rounded-full border-2 border-white shadow-sm"
+                    style={{ background: i.cor_hex || "#E8B4B8" }}
+                  />
+                </div>
                 <div className="flex items-start justify-between gap-2">
                   <div>
                     <p className="text-sm font-medium leading-tight">{i.categoria}</p>
@@ -133,7 +197,13 @@ function Closet() {
         )}
       </MobileShell>
 
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(v) => {
+          setOpen(v);
+          if (!v) resetForm();
+        }}
+      >
         <DialogTrigger asChild>
           <Button size="icon" className="fixed bottom-24 right-5 z-40 h-14 w-14 rounded-full bg-gradient-primary shadow-card">
             <Plus className="h-6 w-6" />
@@ -143,12 +213,55 @@ function Closet() {
           <DialogHeader>
             <DialogTitle className="font-serif">Nova peça</DialogTitle>
           </DialogHeader>
-          <form onSubmit={adicionar} className="space-y-4">
-            {!profile?.subtom && (
-              <div className="rounded-2xl bg-secondary/60 border border-border/40 p-3 text-xs text-muted-foreground leading-relaxed">
-                💡 Faça sua análise de subtom em "Análise" para que possamos avaliar se as peças combinam com você.
+
+          {!profile?.subtom && (
+            <div className="rounded-2xl bg-secondary/60 border border-border/40 p-3 text-xs text-muted-foreground leading-relaxed">
+              💡 Faça sua análise de subtom em "Análise" para que possamos avaliar se as peças combinam com você.
+            </div>
+          )}
+
+          <div className="space-y-4">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              hidden
+              onChange={onFileSelected}
+            />
+
+            {!previewUrl ? (
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full aspect-square rounded-2xl border-2 border-dashed border-border bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:bg-secondary/50 transition-colors"
+              >
+                <Camera className="h-8 w-8" />
+                <p className="text-sm font-medium">Toque para tirar foto</p>
+                <p className="text-xs">ou escolher da galeria</p>
+              </button>
+            ) : (
+              <div className="relative aspect-square rounded-2xl overflow-hidden bg-secondary">
+                <img src={previewUrl} alt="preview" className="absolute inset-0 h-full w-full object-cover" />
+                {detectingColor && (
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <p className="text-white text-sm font-medium">Detectando cor...</p>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPreviewUrl(null);
+                    if (fileInputRef.current) fileInputRef.current.value = "";
+                  }}
+                  className="absolute top-2 right-2 h-8 w-8 rounded-full bg-black/60 text-white flex items-center justify-center text-sm"
+                  aria-label="Remover foto"
+                >
+                  ✕
+                </button>
               </div>
             )}
+
             <div>
               <Label>Categoria</Label>
               <select
@@ -159,12 +272,32 @@ function Closet() {
                 {cats.slice(1).map((c) => <option key={c}>{c}</option>)}
               </select>
             </div>
+
             <div>
-              <Label htmlFor="cor">Cor</Label>
-              <Input id="cor" type="color" value={form.cor_hex} onChange={(e) => setForm({ ...form, cor_hex: e.target.value })} className="rounded-xl mt-1.5 h-12" />
+              <Label>Cor detectada</Label>
+              <div className="mt-1.5 flex items-center gap-3">
+                <input
+                  type="color"
+                  value={form.cor_hex}
+                  onChange={(e) => setForm({ ...form, cor_hex: e.target.value })}
+                  className="h-12 w-16 rounded-xl cursor-pointer border border-input bg-transparent"
+                />
+                <div className="flex-1">
+                  <p className="text-sm font-medium uppercase">{form.cor_hex}</p>
+                  <p className="text-xs text-muted-foreground">Toque para ajustar manualmente</p>
+                </div>
+              </div>
             </div>
-            <Button type="submit" className="w-full rounded-full bg-gradient-primary">Adicionar</Button>
-          </form>
+
+            <Button
+              type="button"
+              onClick={adicionar}
+              disabled={uploadProgress === "uploading" || detectingColor}
+              className="w-full rounded-full bg-gradient-primary"
+            >
+              {uploadProgress === "uploading" ? "Salvando..." : "Adicionar peça"}
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
 
