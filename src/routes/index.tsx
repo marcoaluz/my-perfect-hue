@@ -98,15 +98,32 @@ function Dashboard() {
           <div className="flex items-start justify-between mb-3">
             <div>
               <p className="text-xs uppercase tracking-[0.18em] text-terracotta/80">Look do dia</p>
-              <h3 className="font-serif text-xl mt-1">Tons quentes & terracota</h3>
+              <h3 className="font-serif text-xl mt-1">
+                {lookHoje ? "Sua combinação de hoje" : "Monte seu closet"}
+              </h3>
             </div>
             <Heart className="h-5 w-5 text-rose-dust" />
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            {paletaCores.slice(0, 3).map((c, i) => (
-              <div key={i} className="aspect-[3/4] rounded-2xl" style={{ background: c }} />
-            ))}
-          </div>
+          {lookHoje ? (
+            <Link to="/looks" className="block">
+              <div className="grid grid-cols-3 gap-2">
+                {lookHoje.pecas.slice(0, 3).map((p) => (
+                  <div key={p.id} className="aspect-[3/4] rounded-2xl overflow-hidden shadow-sm">
+                    {p.foto_url ? (
+                      <img src={p.foto_url} alt={p.categoria} className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full" style={{ background: p.cor_hex || "#E8B4B8" }} />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </Link>
+          ) : (
+            <Link to="/closet" className="text-sm text-muted-foreground flex items-center gap-1 hover:text-foreground transition-colors">
+              Adicione peças no closet pra ver looks aqui
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
+          )}
         </Card>
 
         <Card className="rounded-3xl p-5 mb-5 border-border/60 shadow-soft">
