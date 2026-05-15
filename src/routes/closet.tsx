@@ -144,6 +144,11 @@ function Closet() {
             <DialogTitle className="font-serif">Nova peça</DialogTitle>
           </DialogHeader>
           <form onSubmit={adicionar} className="space-y-4">
+            {!profile?.subtom && (
+              <div className="rounded-2xl bg-secondary/60 border border-border/40 p-3 text-xs text-muted-foreground leading-relaxed">
+                💡 Faça sua análise de subtom em "Análise" para que possamos avaliar se as peças combinam com você.
+              </div>
+            )}
             <div>
               <Label>Categoria</Label>
               <select
