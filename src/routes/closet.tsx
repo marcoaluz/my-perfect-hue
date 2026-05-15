@@ -23,7 +23,7 @@ const filters = ["Todas", "Combina", "Não combina"] as const;
 const cats = ["Todas", "Blusas", "Calças", "Vestidos", "Sapatos", "Acessórios"];
 
 function Closet() {
-  const { user, loading } = useRequireAuth();
+  const { user, profile, loading } = useRequireAuth();
   const qc = useQueryClient();
   const [filter, setFilter] = useState<(typeof filters)[number]>("Todas");
   const [cat, setCat] = useState("Todas");
