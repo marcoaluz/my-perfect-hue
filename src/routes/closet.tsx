@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { corCombinaComSubtom } from "@/lib/color-matcher";
 
 export const Route = createFileRoute("/closet")({
   component: Closet,
