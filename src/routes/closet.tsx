@@ -12,6 +12,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { corCombinaComSubtom } from "@/lib/color-matcher";
 
 export const Route = createFileRoute("/closet")({
   component: Closet,
@@ -22,7 +23,7 @@ const filters = ["Todas", "Combina", "Não combina"] as const;
 const cats = ["Todas", "Blusas", "Calças", "Vestidos", "Sapatos", "Acessórios"];
 
 function Closet() {
-  const { user, loading } = useRequireAuth();
+  const { user, profile, loading } = useRequireAuth();
   const qc = useQueryClient();
   const [filter, setFilter] = useState<(typeof filters)[number]>("Todas");
   const [cat, setCat] = useState("Todas");
@@ -52,14 +53,23 @@ function Closet() {
 
   const adicionar = async (e: React.FormEvent) => {
     e.preventDefault();
+    const match = corCombinaComSubtom(
+      form.cor_hex,
+      profile?.subtom,
+      profile?.paleta_sazonal,
+    );
     const { error } = await supabase.from("pecas_roupa").insert({
       user_id: user!.id,
       categoria: form.categoria,
       cor_hex: form.cor_hex,
-      combina_com_subtom: true,
+      combina_com_subtom: match.combina,
     });
     if (error) return toast.error(error.message);
-    toast.success("Peça adicionada ✨");
+    toast.success(
+      match.combina
+        ? `Peça adicionada — ${match.motivo} ✨`
+        : `Peça adicionada — ${match.motivo}`,
+    );
     setOpen(false);
     qc.invalidateQueries({ queryKey: ["pecas"] });
   };
@@ -134,6 +144,11 @@ function Closet() {
             <DialogTitle className="font-serif">Nova peça</DialogTitle>
           </DialogHeader>
           <form onSubmit={adicionar} className="space-y-4">
+            {!profile?.subtom && (
+              <div className="rounded-2xl bg-secondary/60 border border-border/40 p-3 text-xs text-muted-foreground leading-relaxed">
+                💡 Faça sua análise de subtom em "Análise" para que possamos avaliar se as peças combinam com você.
+              </div>
+            )}
             <div>
               <Label>Categoria</Label>
               <select
