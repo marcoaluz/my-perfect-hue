@@ -49,11 +49,27 @@ function Dashboard() {
     },
   });
 
+  const { data: pecas = [] } = useQuery({
+    queryKey: ["pecas", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("pecas_roupa")
+        .select("*")
+        .eq("user_id", user!.id);
+      return (data || []) as Peca[];
+    },
+  });
+
   if (loading || !user) return null;
 
   const nome = profile?.nome || user.email?.split("@")[0] || "você";
   const paletaCores = (ultimaAnalise?.paleta as { cores?: string[] } | null)?.cores ?? fallbackPalette;
   const temAnalise = !!ultimaAnalise;
+
+  const avaliacao = avaliarClosetParaLook(pecas);
+  const today = new Date().toISOString().split("T")[0];
+  const lookHoje = avaliacao.ok ? sugerirLook(pecas, `${user.id}_${today}_v0`) : null;
 
   return (
     <>
