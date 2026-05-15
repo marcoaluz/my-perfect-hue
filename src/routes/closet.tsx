@@ -53,14 +53,23 @@ function Closet() {
 
   const adicionar = async (e: React.FormEvent) => {
     e.preventDefault();
+    const match = corCombinaComSubtom(
+      form.cor_hex,
+      profile?.subtom,
+      profile?.paleta_sazonal,
+    );
     const { error } = await supabase.from("pecas_roupa").insert({
       user_id: user!.id,
       categoria: form.categoria,
       cor_hex: form.cor_hex,
-      combina_com_subtom: true,
+      combina_com_subtom: match.combina,
     });
     if (error) return toast.error(error.message);
-    toast.success("Peça adicionada ✨");
+    toast.success(
+      match.combina
+        ? `Peça adicionada — ${match.motivo} ✨`
+        : `Peça adicionada — ${match.motivo}`,
+    );
     setOpen(false);
     qc.invalidateQueries({ queryKey: ["pecas"] });
   };
