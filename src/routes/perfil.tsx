@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MobileShell } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Card } from "@/components/ui/card";
-import { Camera, Clock, Crown, Settings, LogOut, ChevronRight } from "lucide-react";
+import { Camera, Crown, Settings, LogOut, ChevronRight } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 
