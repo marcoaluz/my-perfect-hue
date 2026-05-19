@@ -15,6 +15,7 @@ import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LooksRouteImport } from './routes/looks'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ClosetRouteImport } from './routes/closet'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as AnaliseRouteImport } from './routes/analise'
@@ -50,6 +51,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ClosetRoute = ClosetRouteImport.update({
   id: '/closet',
   path: '/closet',
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/analise': typeof AnaliseRoute
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/analise': typeof AnaliseRoute
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/analise': typeof AnaliseRoute
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
+  '/configuracoes': typeof ConfiguracoesRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/analise'
     | '/cadastro'
     | '/closet'
+    | '/configuracoes'
     | '/login'
     | '/looks'
     | '/onboarding'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/analise'
     | '/cadastro'
     | '/closet'
+    | '/configuracoes'
     | '/login'
     | '/looks'
     | '/onboarding'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/analise'
     | '/cadastro'
     | '/closet'
+    | '/configuracoes'
     | '/login'
     | '/looks'
     | '/onboarding'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   AnaliseRoute: typeof AnaliseRoute
   CadastroRoute: typeof CadastroRoute
   ClosetRoute: typeof ClosetRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
   LoginRoute: typeof LoginRoute
   LooksRoute: typeof LooksRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -204,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/closet': {
       id: '/closet'
       path: '/closet'
@@ -240,6 +260,7 @@ const rootRouteChildren: RootRouteChildren = {
   AnaliseRoute: AnaliseRoute,
   CadastroRoute: CadastroRoute,
   ClosetRoute: ClosetRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
   LoginRoute: LoginRoute,
   LooksRoute: LooksRoute,
   OnboardingRoute: OnboardingRoute,
