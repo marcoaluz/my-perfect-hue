@@ -5,10 +5,15 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Check, X, Camera } from "lucide-react";
+import { Plus, Check, X, Camera, Trash2 } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { corCombinaComSubtom } from "@/lib/color-matcher";
