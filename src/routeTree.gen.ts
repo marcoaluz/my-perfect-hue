@@ -15,6 +15,7 @@ import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LooksRouteImport } from './routes/looks'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ExcluirContaRouteImport } from './routes/excluir-conta'
 import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ClosetRouteImport } from './routes/closet'
 import { Route as CadastroRouteImport } from './routes/cadastro'
@@ -51,6 +52,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExcluirContaRoute = ExcluirContaRouteImport.update({
+  id: '/excluir-conta',
+  path: '/excluir-conta',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
   id: '/configuracoes',
   path: '/configuracoes',
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
   '/configuracoes': typeof ConfiguracoesRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/closet'
     | '/configuracoes'
+    | '/excluir-conta'
     | '/login'
     | '/looks'
     | '/onboarding'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/closet'
     | '/configuracoes'
+    | '/excluir-conta'
     | '/login'
     | '/looks'
     | '/onboarding'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/cadastro'
     | '/closet'
     | '/configuracoes'
+    | '/excluir-conta'
     | '/login'
     | '/looks'
     | '/onboarding'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   CadastroRoute: typeof CadastroRoute
   ClosetRoute: typeof ClosetRoute
   ConfiguracoesRoute: typeof ConfiguracoesRoute
+  ExcluirContaRoute: typeof ExcluirContaRoute
   LoginRoute: typeof LoginRoute
   LooksRoute: typeof LooksRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -217,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/excluir-conta': {
+      id: '/excluir-conta'
+      path: '/excluir-conta'
+      fullPath: '/excluir-conta'
+      preLoaderRoute: typeof ExcluirContaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/configuracoes': {
       id: '/configuracoes'
       path: '/configuracoes'
@@ -261,6 +281,7 @@ const rootRouteChildren: RootRouteChildren = {
   CadastroRoute: CadastroRoute,
   ClosetRoute: ClosetRoute,
   ConfiguracoesRoute: ConfiguracoesRoute,
+  ExcluirContaRoute: ExcluirContaRoute,
   LoginRoute: LoginRoute,
   LooksRoute: LooksRoute,
   OnboardingRoute: OnboardingRoute,
