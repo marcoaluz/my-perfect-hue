@@ -350,6 +350,29 @@ function Closet() {
         </DialogContent>
       </Dialog>
 
+      <AlertDialog
+        open={!!pecaParaDeletar}
+        onOpenChange={(v) => !v && setPecaParaDeletar(null)}
+      >
+        <AlertDialogContent className="rounded-3xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-serif">Remover peça?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Essa peça será removida do seu closet. Looks favoritos que usam ela podem ficar incompletos.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full">Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={deletarPeca}
+              className="rounded-full bg-destructive hover:bg-destructive/90"
+            >
+              Remover
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       <BottomNav />
     </>
   );
