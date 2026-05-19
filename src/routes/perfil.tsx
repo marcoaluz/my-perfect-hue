@@ -34,9 +34,8 @@ function Perfil() {
 
   const items = [
     { icon: Camera, label: "Refazer análise", action: () => navigate({ to: "/analise" }) },
-    { icon: Clock, label: "Histórico" },
-    { icon: Crown, label: "Plano Premium", highlight: true },
-    { icon: Settings, label: "Configurações" },
+    { icon: Crown, label: "Plano Premium", highlight: true, action: () => navigate({ to: "/perfil" }) },
+    { icon: Settings, label: "Configurações", action: () => navigate({ to: "/configuracoes" }) },
     { icon: LogOut, label: "Sair", action: sair },
   ];
 
