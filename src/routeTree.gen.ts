@@ -9,15 +9,29 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
+import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LooksRouteImport } from './routes/looks'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as ExcluirContaRouteImport } from './routes/excluir-conta'
+import { Route as ConfiguracoesRouteImport } from './routes/configuracoes'
 import { Route as ClosetRouteImport } from './routes/closet'
 import { Route as CadastroRouteImport } from './routes/cadastro'
 import { Route as AnaliseRouteImport } from './routes/analise'
 import { Route as IndexRouteImport } from './routes/index'
 
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
+  id: '/recuperar-senha',
+  path: '/recuperar-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PerfilRoute = PerfilRouteImport.update({
   id: '/perfil',
   path: '/perfil',
@@ -36,6 +50,16 @@ const LooksRoute = LooksRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExcluirContaRoute = ExcluirContaRouteImport.update({
+  id: '/excluir-conta',
+  path: '/excluir-conta',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfiguracoesRoute = ConfiguracoesRouteImport.update({
+  id: '/configuracoes',
+  path: '/configuracoes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClosetRoute = ClosetRouteImport.update({
@@ -64,20 +88,28 @@ export interface FileRoutesByFullPath {
   '/analise': typeof AnaliseRoute
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
   '/perfil': typeof PerfilRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/analise': typeof AnaliseRoute
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
   '/perfil': typeof PerfilRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -85,10 +117,14 @@ export interface FileRoutesById {
   '/analise': typeof AnaliseRoute
   '/cadastro': typeof CadastroRoute
   '/closet': typeof ClosetRoute
+  '/configuracoes': typeof ConfiguracoesRoute
+  '/excluir-conta': typeof ExcluirContaRoute
   '/login': typeof LoginRoute
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
   '/perfil': typeof PerfilRoute
+  '/recuperar-senha': typeof RecuperarSenhaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -97,30 +133,42 @@ export interface FileRouteTypes {
     | '/analise'
     | '/cadastro'
     | '/closet'
+    | '/configuracoes'
+    | '/excluir-conta'
     | '/login'
     | '/looks'
     | '/onboarding'
     | '/perfil'
+    | '/recuperar-senha'
+    | '/redefinir-senha'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/analise'
     | '/cadastro'
     | '/closet'
+    | '/configuracoes'
+    | '/excluir-conta'
     | '/login'
     | '/looks'
     | '/onboarding'
     | '/perfil'
+    | '/recuperar-senha'
+    | '/redefinir-senha'
   id:
     | '__root__'
     | '/'
     | '/analise'
     | '/cadastro'
     | '/closet'
+    | '/configuracoes'
+    | '/excluir-conta'
     | '/login'
     | '/looks'
     | '/onboarding'
     | '/perfil'
+    | '/recuperar-senha'
+    | '/redefinir-senha'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -128,14 +176,32 @@ export interface RootRouteChildren {
   AnaliseRoute: typeof AnaliseRoute
   CadastroRoute: typeof CadastroRoute
   ClosetRoute: typeof ClosetRoute
+  ConfiguracoesRoute: typeof ConfiguracoesRoute
+  ExcluirContaRoute: typeof ExcluirContaRoute
   LoginRoute: typeof LoginRoute
   LooksRoute: typeof LooksRoute
   OnboardingRoute: typeof OnboardingRoute
   PerfilRoute: typeof PerfilRoute
+  RecuperarSenhaRoute: typeof RecuperarSenhaRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/recuperar-senha': {
+      id: '/recuperar-senha'
+      path: '/recuperar-senha'
+      fullPath: '/recuperar-senha'
+      preLoaderRoute: typeof RecuperarSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/perfil': {
       id: '/perfil'
       path: '/perfil'
@@ -162,6 +228,20 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/excluir-conta': {
+      id: '/excluir-conta'
+      path: '/excluir-conta'
+      fullPath: '/excluir-conta'
+      preLoaderRoute: typeof ExcluirContaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configuracoes': {
+      id: '/configuracoes'
+      path: '/configuracoes'
+      fullPath: '/configuracoes'
+      preLoaderRoute: typeof ConfiguracoesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/closet': {
@@ -200,10 +280,14 @@ const rootRouteChildren: RootRouteChildren = {
   AnaliseRoute: AnaliseRoute,
   CadastroRoute: CadastroRoute,
   ClosetRoute: ClosetRoute,
+  ConfiguracoesRoute: ConfiguracoesRoute,
+  ExcluirContaRoute: ExcluirContaRoute,
   LoginRoute: LoginRoute,
   LooksRoute: LooksRoute,
   OnboardingRoute: OnboardingRoute,
   PerfilRoute: PerfilRoute,
+  RecuperarSenhaRoute: RecuperarSenhaRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

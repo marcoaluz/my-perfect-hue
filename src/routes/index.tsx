@@ -71,12 +71,15 @@ function Dashboard() {
   const today = new Date().toISOString().split("T")[0];
   const lookHoje = avaliacao.ok ? sugerirLook(pecas, `${user.id}_${today}_v0`) : null;
 
+  const hora = new Date().getHours();
+  const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
+
   return (
     <>
       <MobileShell>
         <header className="mb-6 flex items-center justify-between">
           <div>
-            <p className="text-sm text-muted-foreground">Bom dia,</p>
+            <p className="text-sm text-muted-foreground">{saudacao},</p>
             <h1 className="font-serif text-2xl">{nome} ✨</h1>
           </div>
           <div className="h-11 w-11 rounded-full bg-gradient-primary shadow-soft" />
@@ -85,7 +88,9 @@ function Dashboard() {
         <Card className="bg-gradient-primary border-0 text-primary-foreground p-6 rounded-3xl shadow-card mb-5">
           <p className="text-xs uppercase tracking-[0.18em] opacity-90 mb-2">Sua análise</p>
           <h2 className="font-serif text-2xl leading-tight mb-4">
-            {temAnalise ? `Subtom: ${ultimaAnalise!.subtom_detectado}` : "Descubra suas cores em 30 segundos"}
+            {temAnalise
+              ? (profile?.paleta_sazonal || `Subtom: ${ultimaAnalise!.subtom_detectado}`)
+              : "Descubra suas cores em 30 segundos"}
           </h2>
           <Button asChild variant="secondary" className="rounded-full">
             <Link to="/analise">

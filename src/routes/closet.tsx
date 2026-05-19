@@ -5,10 +5,15 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Check, X, Camera } from "lucide-react";
+import { Plus, Check, X, Camera, Trash2 } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel,
+  AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+  AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { corCombinaComSubtom } from "@/lib/color-matcher";
@@ -33,6 +38,39 @@ function Closet() {
   const [detectingColor, setDetectingColor] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<"idle" | "uploading" | "done">("idle");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [pecaParaDeletar, setPecaParaDeletar] = useState<string | null>(null);
+
+  const deletarPeca = async () => {
+    if (!pecaParaDeletar) return;
+    const peca = items.find((p) => p.id === pecaParaDeletar);
+
+    const { error } = await supabase
+      .from("pecas_roupa")
+      .delete()
+      .eq("id", pecaParaDeletar);
+
+    if (error) {
+      toast.error("Não consegui deletar: " + error.message);
+      setPecaParaDeletar(null);
+      return;
+    }
+
+    if (peca?.foto_url) {
+      try {
+        const url = new URL(peca.foto_url);
+        const pathMatch = url.pathname.match(/\/fotos\/(.+)$/);
+        if (pathMatch) {
+          await supabase.storage.from("fotos").remove([pathMatch[1]]);
+        }
+      } catch {
+        // ignora — peça já foi removida do banco
+      }
+    }
+
+    toast.success("Peça removida ✨");
+    setPecaParaDeletar(null);
+    qc.invalidateQueries({ queryKey: ["pecas"] });
+  };
 
   const { data: items = [] } = useQuery({
     queryKey: ["pecas", user?.id],
@@ -170,7 +208,18 @@ function Closet() {
         ) : (
           <div className="grid grid-cols-2 gap-3">
             {filtered.map((i) => (
-              <Card key={i.id} className="rounded-2xl p-3 border-border/60 shadow-soft hover:scale-[1.02] transition-transform">
+              <Card key={i.id} className="relative rounded-2xl p-3 border-border/60 shadow-soft hover:scale-[1.02] transition-transform group">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setPecaParaDeletar(i.id);
+                  }}
+                  className="absolute top-2 right-2 z-10 h-7 w-7 rounded-full bg-black/40 backdrop-blur text-white flex items-center justify-center opacity-60 sm:opacity-0 sm:group-hover:opacity-100 focus:opacity-100 transition-opacity"
+                  aria-label="Remover peça"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                </button>
                 <div className="relative aspect-square rounded-xl mb-3 overflow-hidden">
                   {i.foto_url ? (
                     <img src={i.foto_url} alt={i.categoria || "peça"} className="absolute inset-0 h-full w-full object-cover" loading="lazy" />
@@ -300,6 +349,29 @@ function Closet() {
           </div>
         </DialogContent>
       </Dialog>
+
+      <AlertDialog
+        open={!!pecaParaDeletar}
+        onOpenChange={(v) => !v && setPecaParaDeletar(null)}
+      >
+        <AlertDialogContent className="rounded-3xl">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="font-serif">Remover peça?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Essa peça será removida do seu closet. Looks favoritos que usam ela podem ficar incompletos.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="rounded-full">Cancelar</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={deletarPeca}
+              className="rounded-full bg-destructive hover:bg-destructive/90"
+            >
+              Remover
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <BottomNav />
     </>

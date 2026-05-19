@@ -72,6 +72,11 @@ function Login() {
           <Label htmlFor="senha">Senha</Label>
           <Input id="senha" type="password" required value={senha} onChange={(e) => setSenha(e.target.value)} placeholder="••••••••" className="rounded-xl mt-1.5" />
         </div>
+        <div className="text-right -mt-2">
+          <Link to="/recuperar-senha" className="text-xs text-terracotta font-medium">
+            Esqueci minha senha
+          </Link>
+        </div>
         <Button type="submit" disabled={loading} size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft">
           {loading ? "Entrando..." : "Entrar"}
         </Button>
