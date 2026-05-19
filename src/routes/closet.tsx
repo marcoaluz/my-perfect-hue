@@ -38,6 +38,39 @@ function Closet() {
   const [detectingColor, setDetectingColor] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<"idle" | "uploading" | "done">("idle");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [pecaParaDeletar, setPecaParaDeletar] = useState<string | null>(null);
+
+  const deletarPeca = async () => {
+    if (!pecaParaDeletar) return;
+    const peca = items.find((p) => p.id === pecaParaDeletar);
+
+    const { error } = await supabase
+      .from("pecas_roupa")
+      .delete()
+      .eq("id", pecaParaDeletar);
+
+    if (error) {
+      toast.error("Não consegui deletar: " + error.message);
+      setPecaParaDeletar(null);
+      return;
+    }
+
+    if (peca?.foto_url) {
+      try {
+        const url = new URL(peca.foto_url);
+        const pathMatch = url.pathname.match(/\/fotos\/(.+)$/);
+        if (pathMatch) {
+          await supabase.storage.from("fotos").remove([pathMatch[1]]);
+        }
+      } catch {
+        // ignora — peça já foi removida do banco
+      }
+    }
+
+    toast.success("Peça removida ✨");
+    setPecaParaDeletar(null);
+    qc.invalidateQueries({ queryKey: ["pecas"] });
+  };
 
   const { data: items = [] } = useQuery({
     queryKey: ["pecas", user?.id],
