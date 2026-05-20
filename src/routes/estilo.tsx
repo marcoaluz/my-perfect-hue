@@ -100,6 +100,28 @@ function Estilo() {
     },
   });
 
+  const { data: favoritos = [] } = useQuery({
+    queryKey: ["consultas_salvas", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("consultas_salvas")
+        .select("*")
+        .eq("user_id", user!.id)
+        .eq("favorito", true)
+        .order("created_at", { ascending: false });
+      return data || [];
+    },
+  });
+
+  const excluirFavorito = async (id: string) => {
+    const { error } = await supabase.from("consultas_salvas").delete().eq("id", id);
+    if (error) return toast.error("Erro ao excluir");
+    toast.success("Removido dos favoritos");
+    qc.invalidateQueries({ queryKey: ["consultas_salvas"] });
+  };
+
+
   useEffect(() => {
     if (profileFull) {
       if (profileFull.formato_rosto) setFormato(profileFull.formato_rosto as FormatoRosto);
