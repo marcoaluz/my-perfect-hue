@@ -217,6 +217,7 @@ function Estilo() {
       return;
     }
     toast.success("Consulta salva nos favoritos ❤️");
+    qc.invalidateQueries({ queryKey: ["consultas_salvas"] });
   };
 
   if (loading || !user) return null;
