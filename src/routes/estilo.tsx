@@ -206,14 +206,17 @@ function Estilo() {
     setOcasiao(null);
     setPenteadoEscolhido(null);
     setRefreshIdx(0);
+    setFavoritoAtivo(null);
   };
 
   const novasSugestoes = () => {
+    setFavoritoAtivo(null);
     setRefreshIdx((i) => i + 1);
     setPenteadoEscolhido(null);
   };
 
-  const abrirFavorito = (f: typeof favoritos[number]) => {
+  const abrirFavorito = (f: any) => {
+    setFavoritoAtivo(f);
     setOcasiao(f.ocasiao as Ocasiao);
     if (f.formato_rosto) setFormato(f.formato_rosto as FormatoRosto);
     if (f.cabelo_comprimento) setComprimento(f.cabelo_comprimento as CabeloComprimento);
