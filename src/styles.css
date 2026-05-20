@@ -40,6 +40,7 @@
   --color-terracotta: var(--terracotta);
   --color-champagne: var(--champagne);
   --color-sage: var(--sage);
+  --color-lilac: var(--lilac);
   --color-graphite: var(--graphite);
 
   --shadow-soft: 0 4px 20px -8px color-mix(in oklab, var(--terracotta) 18%, transparent);
