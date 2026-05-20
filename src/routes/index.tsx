@@ -85,19 +85,48 @@ function Dashboard() {
           <div className="h-11 w-11 rounded-full bg-gradient-primary shadow-soft" />
         </header>
 
-        <Card className="bg-gradient-primary border-0 text-primary-foreground p-6 rounded-3xl shadow-card mb-5">
-          <p className="text-xs uppercase tracking-[0.18em] opacity-90 mb-2">Sua análise</p>
-          <h2 className="font-serif text-2xl leading-tight mb-4">
+        <Card className="bg-gradient-primary border-0 text-primary-foreground px-6 py-8 rounded-3xl shadow-card mb-5 relative overflow-hidden">
+          <div aria-hidden className="absolute -top-12 -right-12 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+          <p className="relative text-xs uppercase tracking-[0.18em] opacity-90 mb-2">
+            {temAnalise ? "Sua paleta" : "Descubra suas cores"}
+          </p>
+          <h2 className="relative font-serif text-3xl leading-tight mb-1">
             {temAnalise
               ? (profile?.paleta_sazonal || `Subtom: ${ultimaAnalise!.subtom_detectado}`)
-              : "Descubra suas cores em 30 segundos"}
+              : "Em 30 segundos"}
           </h2>
-          <Button asChild variant="secondary" className="rounded-full">
+          <p className="relative text-sm opacity-90 mb-5">
+            {temAnalise
+              ? "Continue refinando seu estilo ✨"
+              : "A análise é a porta de entrada pra tudo aqui"}
+          </p>
+          <Button asChild variant="secondary" className="relative rounded-full">
             <Link to="/analise">
               <Camera className="h-4 w-4" /> {temAnalise ? "Refazer análise" : "Fazer minha análise"}
             </Link>
           </Button>
         </Card>
+
+        <div className="grid grid-cols-3 gap-2 mb-5">
+          <Link to="/closet" className="block">
+            <Card className="rounded-2xl p-3 border-border/60 flex flex-col items-center gap-1.5 hover:shadow-soft transition-shadow">
+              <Shirt className="h-5 w-5 text-terracotta" />
+              <p className="text-xs font-medium">Closet</p>
+            </Card>
+          </Link>
+          <Link to="/estilo" className="block">
+            <Card className="rounded-2xl p-3 border-border/60 flex flex-col items-center gap-1.5 hover:shadow-soft transition-shadow">
+              <Wand2 className="h-5 w-5 text-terracotta" />
+              <p className="text-xs font-medium">Estilo</p>
+            </Card>
+          </Link>
+          <Link to="/analise" className="block">
+            <Card className="rounded-2xl p-3 border-border/60 flex flex-col items-center gap-1.5 hover:shadow-soft transition-shadow">
+              <Camera className="h-5 w-5 text-terracotta" />
+              <p className="text-xs font-medium">Refazer</p>
+            </Card>
+          </Link>
+        </div>
 
         <Link to="/estilo" className="block mb-5">
           <Card className="rounded-3xl p-5 border-border/60 shadow-soft bg-gradient-to-br from-rose-dust/30 to-terracotta/10 hover:shadow-card transition-shadow">
