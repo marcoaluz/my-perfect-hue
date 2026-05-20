@@ -136,25 +136,38 @@ function Estilo() {
 
   const penteados = useMemo(() => {
     if (!ocasiao) return [];
+    if (favoritoAtivo?.penteado_id) {
+      const pinned = PENTEADOS.find((p) => p.id === favoritoAtivo.penteado_id);
+      const rest = sugerirPenteados(formato, comprimento, textura, ocasiao, 3)
+        .filter((p) => p.id !== favoritoAtivo.penteado_id);
+      return pinned ? [pinned, ...rest].slice(0, 3) : rest;
+    }
     return sugerirPenteados(formato, comprimento, textura, ocasiao, 3);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ocasiao, formato, comprimento, textura, refreshIdx]);
+  }, [ocasiao, formato, comprimento, textura, refreshIdx, favoritoAtivo]);
 
   const maquiagem = useMemo(() => {
+    if (favoritoAtivo?.maquiagem) return favoritoAtivo.maquiagem;
     if (!ocasiao) return null;
     return sugerirMaquiagem(profile?.subtom, profile?.paleta_sazonal, [], ocasiao);
-  }, [ocasiao, profile]);
+  }, [ocasiao, profile, favoritoAtivo]);
 
   const joias = useMemo(() => {
+    if (favoritoAtivo?.joias) return favoritoAtivo.joias;
     if (!ocasiao) return null;
     return sugerirJoias(profile?.subtom, ocasiao);
-  }, [ocasiao, profile]);
+  }, [ocasiao, profile, favoritoAtivo]);
 
   const lookDoCloset = useMemo(() => {
     if (!ocasiao || pecas.length === 0) return null;
+    if (favoritoAtivo?.pecas_look?.length) {
+      const ids = new Set<string>(favoritoAtivo.pecas_look);
+      const pecasSalvas = pecas.filter((p) => ids.has(p.id));
+      if (pecasSalvas.length) return { pecas: pecasSalvas };
+    }
     const seed = `${user?.id}_estilo_${ocasiao}_v${refreshIdx}`;
     return sugerirLook(pecas, seed);
-  }, [ocasiao, pecas, user, refreshIdx]);
+  }, [ocasiao, pecas, user, refreshIdx, favoritoAtivo]);
 
   const escolherOcasiao = (o: Ocasiao) => {
     setOcasiao(o);
