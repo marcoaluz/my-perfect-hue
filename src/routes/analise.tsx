@@ -97,7 +97,8 @@ function Analise() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [region, setRegion] = useState<{ canvas: HTMLCanvasElement; cx: number; cy: number; radius: number } | null>(null);
   const [result, setResult] = useState<SubtomResult | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
+  const galleryRef = useRef<HTMLInputElement>(null);
 
   const onFile = (f: File | null) => {
     if (!f) return;
