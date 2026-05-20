@@ -201,9 +201,28 @@ function Closet() {
           ))}
         </div>
 
-        {filtered.length === 0 ? (
+        {items.length === 0 ? (
+          <div className="text-center py-12 px-4">
+            <div className="relative mx-auto mb-5 flex h-20 w-20 items-center justify-center">
+              <div aria-hidden className="absolute inset-0 rounded-full bg-gradient-primary opacity-30 blur-2xl" />
+              <div className="relative flex h-20 w-20 items-center justify-center rounded-full bg-gradient-primary shadow-card">
+                <Shirt className="h-9 w-9 text-primary-foreground" strokeWidth={1.6} />
+              </div>
+            </div>
+            <h2 className="font-serif text-xl mb-2">Monte seu closet inteligente ✨</h2>
+            <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+              Adicione peças e descubra quais realmente valorizam seu tom natural.
+            </p>
+            <Button
+              onClick={() => setOpen(true)}
+              className="mt-5 rounded-full bg-gradient-primary shadow-soft"
+            >
+              <Plus className="h-4 w-4" /> Adicionar minha primeira peça
+            </Button>
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="text-center py-16 text-sm text-muted-foreground">
-            Seu closet está vazio. Toque em + para adicionar uma peça ✨
+            Nenhuma peça com esses filtros.
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-3">
