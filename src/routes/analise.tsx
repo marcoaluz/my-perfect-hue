@@ -14,12 +14,7 @@ import { analyzeRegion, type SubtomResult } from "@/lib/skin-analyzer";
 
 function LoadingScan() {
   const [stage, setStage] = useState(0);
-  const stages = [
-    "Analisando pele",
-    "Detectando subtom",
-    "Avaliando contraste",
-    "Montando paleta",
-  ];
+  const stages = ["Analisando pele", "Detectando subtom", "Avaliando contraste", "Montando paleta"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -31,7 +26,10 @@ function LoadingScan() {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
       <div className="relative mb-8 h-32 w-32">
-        <div aria-hidden className="absolute inset-0 rounded-full bg-gradient-primary opacity-40 blur-2xl animate-pulse" />
+        <div
+          aria-hidden
+          className="absolute inset-0 rounded-full bg-gradient-primary opacity-40 blur-2xl animate-pulse"
+        />
         <div className="absolute inset-0 rounded-full bg-gradient-primary" />
         <div className="absolute inset-0 flex items-center justify-center">
           <Sparkles className="h-10 w-10 text-primary-foreground" />
@@ -69,8 +67,8 @@ function LoadingScan() {
                 i < stage
                   ? "text-foreground"
                   : i === stage
-                  ? "text-terracotta font-medium"
-                  : "text-muted-foreground"
+                    ? "text-terracotta font-medium"
+                    : "text-muted-foreground"
               }
             >
               {s}
@@ -95,7 +93,12 @@ function Analise() {
   const [step, setStep] = useState<Step>("intro");
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
-  const [region, setRegion] = useState<{ canvas: HTMLCanvasElement; cx: number; cy: number; radius: number } | null>(null);
+  const [region, setRegion] = useState<{
+    canvas: HTMLCanvasElement;
+    cx: number;
+    cy: number;
+    radius: number;
+  } | null>(null);
   const [result, setResult] = useState<SubtomResult | null>(null);
 
   const onFile = (f: File | null) => {
@@ -119,7 +122,9 @@ function Analise() {
       if (imageFile) {
         const ext = imageFile.name.split(".").pop() || "jpg";
         const path = `${user.id}/${Date.now()}.${ext}`;
-        const { error: upErr } = await supabase.storage.from("fotos").upload(path, imageFile, { upsert: true });
+        const { error: upErr } = await supabase.storage
+          .from("fotos")
+          .upload(path, imageFile, { upsert: true });
         if (!upErr) foto_url = path;
       }
 
@@ -168,7 +173,11 @@ function Analise() {
   return (
     <>
       <MobileShell>
-        <PageHeader eyebrow="IA local" title="Análise de subtom" subtitle="100% no seu dispositivo, sem enviar dados" />
+        <PageHeader
+          eyebrow="IA local"
+          title="Análise de subtom"
+          subtitle="100% no seu dispositivo, sem enviar dados"
+        />
 
         <input
           id="analise-camera-input"
@@ -218,7 +227,8 @@ function Analise() {
                 htmlFor="analise-camera-input"
                 className={buttonVariants({
                   size: "lg",
-                  className: "w-full rounded-full bg-gradient-primary shadow-soft cursor-pointer touch-manipulation select-none",
+                  className:
+                    "w-full rounded-full bg-gradient-primary shadow-soft cursor-pointer touch-manipulation select-none",
                 })}
               >
                 <Camera className="h-4 w-4" /> Tirar foto
@@ -246,8 +256,13 @@ function Analise() {
               <SkinPicker imageUrl={imageUrl} onChange={setRegion} />
             </Card>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex-1 rounded-full" onClick={reset}>Trocar foto</Button>
-              <Button className="flex-1 rounded-full bg-gradient-primary shadow-soft" onClick={analisar}>
+              <Button variant="outline" className="flex-1 rounded-full" onClick={reset}>
+                Trocar foto
+              </Button>
+              <Button
+                className="flex-1 rounded-full bg-gradient-primary shadow-soft"
+                onClick={analisar}
+              >
                 Analisar <ArrowRight className="h-4 w-4" />
               </Button>
             </div>
@@ -270,10 +285,14 @@ function Analise() {
                 </span>
               </div>
               <p className="text-sm opacity-90 mt-3 capitalize">
-                {result.subtom.replace("_", " · ")} — confiança {Math.round(result.confianca * 100)}%
+                {result.subtom.replace("_", " · ")} — confiança {Math.round(result.confianca * 100)}
+                %
               </p>
               <div className="mt-4 flex items-center gap-3 text-xs opacity-90">
-                <span className="h-6 w-6 rounded-full border border-white/40" style={{ background: `rgb(${result.rgb.r},${result.rgb.g},${result.rgb.b})` }} />
+                <span
+                  className="h-6 w-6 rounded-full border border-white/40"
+                  style={{ background: `rgb(${result.rgb.r},${result.rgb.g},${result.rgb.b})` }}
+                />
                 Tom médio detectado na pele
               </div>
               <p className="text-xs opacity-75 mt-2">
@@ -285,7 +304,11 @@ function Analise() {
               <p className="font-serif text-lg mb-3">Cores que te valorizam</p>
               <div className="flex gap-2">
                 {result.cores_que_combinam.map((c) => (
-                  <div key={c} className="flex-1 aspect-square rounded-2xl shadow-sm" style={{ background: c }} />
+                  <div
+                    key={c}
+                    className="flex-1 aspect-square rounded-2xl shadow-sm"
+                    style={{ background: c }}
+                  />
                 ))}
               </div>
             </Card>
@@ -294,14 +317,20 @@ function Analise() {
               <p className="font-serif text-lg mb-3">Cores para evitar</p>
               <div className="flex gap-2">
                 {result.cores_a_evitar.map((c) => (
-                  <div key={c} className="flex-1 aspect-square rounded-2xl shadow-sm opacity-70" style={{ background: c }} />
+                  <div
+                    key={c}
+                    className="flex-1 aspect-square rounded-2xl shadow-sm opacity-70"
+                    style={{ background: c }}
+                  />
                 ))}
               </div>
             </Card>
 
             <Card className="rounded-3xl p-5 mb-4 bg-secondary/40 border-border/40">
               <p className="text-xs text-muted-foreground leading-relaxed">
-                💡 Esta é uma análise por algoritmo de visão computacional. A iluminação do ambiente influencia o resultado — para máxima precisão, refaça em luz natural. Para análise ainda mais detalhada, em breve teremos o plano Premium com IA avançada.
+                💡 Esta é uma análise por algoritmo de visão computacional. A iluminação do ambiente
+                influencia o resultado — para máxima precisão, refaça em luz natural. Para análise
+                ainda mais detalhada, em breve teremos o plano Premium com IA avançada.
               </p>
             </Card>
 
