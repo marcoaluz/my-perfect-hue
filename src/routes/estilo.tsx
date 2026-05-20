@@ -267,6 +267,50 @@ function Estilo() {
                 </p>
               </Card>
             )}
+
+            {favoritos.length > 0 && (
+              <div className="mt-8">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="font-serif text-lg">Meus favoritos</h2>
+                  <span className="text-xs text-muted-foreground">{favoritos.length}</span>
+                </div>
+                <div className="space-y-2">
+                  {favoritos.map((f) => {
+                    const m = f.maquiagem as { batom?: { cor?: string }; blush?: { cor?: string } } | null;
+                    const j = f.joias as { metal_hex?: string } | null;
+                    return (
+                      <Card key={f.id} className="rounded-2xl p-4 border-border/60 flex items-center gap-3">
+                        <div className="flex -space-x-1 shrink-0">
+                          {m?.batom?.cor && (
+                            <div className="h-8 w-8 rounded-full border-2 border-background shadow-sm" style={{ background: m.batom.cor }} />
+                          )}
+                          {m?.blush?.cor && (
+                            <div className="h-8 w-8 rounded-full border-2 border-background shadow-sm" style={{ background: m.blush.cor }} />
+                          )}
+                          {j?.metal_hex && (
+                            <div className="h-8 w-8 rounded-full border-2 border-background shadow-sm" style={{ background: j.metal_hex }} />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-medium capitalize text-sm">{f.ocasiao}</p>
+                          <p className="text-[11px] text-muted-foreground">
+                            {new Date(f.created_at!).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}
+                            {f.pecas_look?.length ? ` · ${f.pecas_look.length} peças` : ""}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => excluirFavorito(f.id)}
+                          className="p-2 text-muted-foreground hover:text-destructive"
+                          aria-label="Excluir"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </>
         )}
 
