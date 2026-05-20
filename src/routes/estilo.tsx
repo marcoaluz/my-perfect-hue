@@ -18,11 +18,12 @@ import {
   sugerirMaquiagem,
   sugerirJoias,
 } from "@/lib/style-suggester";
-import type {
+import {
   FormatoRosto,
   CabeloComprimento,
   CabeloTextura,
   Ocasiao,
+  PENTEADOS,
 } from "@/lib/hairstyle-catalog";
 import { sugerirLook, type Peca } from "@/lib/look-suggester";
 
@@ -74,6 +75,7 @@ function Estilo() {
   const [textura, setTextura] = useState<CabeloTextura | null>(null);
   const [penteadoEscolhido, setPenteadoEscolhido] = useState<string | null>(null);
   const [refreshIdx, setRefreshIdx] = useState(0);
+  const [favoritoAtivo, setFavoritoAtivo] = useState<any>(null);
 
   const { data: profileFull } = useQuery({
     queryKey: ["profile-estilo", user?.id],
@@ -134,25 +136,38 @@ function Estilo() {
 
   const penteados = useMemo(() => {
     if (!ocasiao) return [];
+    if (favoritoAtivo?.penteado_id) {
+      const pinned = PENTEADOS.find((p) => p.id === favoritoAtivo.penteado_id);
+      const rest = sugerirPenteados(formato, comprimento, textura, ocasiao, 3)
+        .filter((p) => p.id !== favoritoAtivo.penteado_id);
+      return pinned ? [pinned, ...rest].slice(0, 3) : rest;
+    }
     return sugerirPenteados(formato, comprimento, textura, ocasiao, 3);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ocasiao, formato, comprimento, textura, refreshIdx]);
+  }, [ocasiao, formato, comprimento, textura, refreshIdx, favoritoAtivo]);
 
   const maquiagem = useMemo(() => {
+    if (favoritoAtivo?.maquiagem) return favoritoAtivo.maquiagem;
     if (!ocasiao) return null;
     return sugerirMaquiagem(profile?.subtom, profile?.paleta_sazonal, [], ocasiao);
-  }, [ocasiao, profile]);
+  }, [ocasiao, profile, favoritoAtivo]);
 
   const joias = useMemo(() => {
+    if (favoritoAtivo?.joias) return favoritoAtivo.joias;
     if (!ocasiao) return null;
     return sugerirJoias(profile?.subtom, ocasiao);
-  }, [ocasiao, profile]);
+  }, [ocasiao, profile, favoritoAtivo]);
 
   const lookDoCloset = useMemo(() => {
     if (!ocasiao || pecas.length === 0) return null;
+    if (favoritoAtivo?.pecas_look?.length) {
+      const ids = new Set<string>(favoritoAtivo.pecas_look);
+      const pecasSalvas = pecas.filter((p) => ids.has(p.id));
+      if (pecasSalvas.length) return { pecas: pecasSalvas };
+    }
     const seed = `${user?.id}_estilo_${ocasiao}_v${refreshIdx}`;
     return sugerirLook(pecas, seed);
-  }, [ocasiao, pecas, user, refreshIdx]);
+  }, [ocasiao, pecas, user, refreshIdx, favoritoAtivo]);
 
   const escolherOcasiao = (o: Ocasiao) => {
     setOcasiao(o);
@@ -191,14 +206,17 @@ function Estilo() {
     setOcasiao(null);
     setPenteadoEscolhido(null);
     setRefreshIdx(0);
+    setFavoritoAtivo(null);
   };
 
   const novasSugestoes = () => {
+    setFavoritoAtivo(null);
     setRefreshIdx((i) => i + 1);
     setPenteadoEscolhido(null);
   };
 
-  const abrirFavorito = (f: typeof favoritos[number]) => {
+  const abrirFavorito = (f: any) => {
+    setFavoritoAtivo(f);
     setOcasiao(f.ocasiao as Ocasiao);
     if (f.formato_rosto) setFormato(f.formato_rosto as FormatoRosto);
     if (f.cabelo_comprimento) setComprimento(f.cabelo_comprimento as CabeloComprimento);
@@ -547,7 +565,7 @@ function Estilo() {
 
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1 shrink-0">
-                      {maquiagem.sombra.cores.map((c, i) => (
+                      {maquiagem.sombra.cores.map((c: string, i: number) => (
                         <div
                           key={i}
                           className="h-10 w-5 rounded-md shadow-sm"
