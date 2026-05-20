@@ -99,6 +99,23 @@ function Dashboard() {
           </Button>
         </Card>
 
+        <Link to="/estilo" className="block mb-5">
+          <Card className="rounded-3xl p-5 border-border/60 shadow-soft bg-gradient-to-br from-rose-dust/30 to-terracotta/10 hover:shadow-card transition-shadow">
+            <div className="flex items-center gap-4">
+              <div className="h-12 w-12 rounded-2xl bg-terracotta/20 flex items-center justify-center shrink-0">
+                <Sparkles className="h-6 w-6 text-terracotta" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-serif text-lg">Consultoria de Estilo</h3>
+                <p className="text-xs text-muted-foreground">
+                  Look completo: roupa, maquiagem, penteado e joias ✨
+                </p>
+              </div>
+            </div>
+          </Card>
+        </Link>
+
+
         <Card className="rounded-3xl p-5 mb-5 border-border/60 shadow-soft">
           <div className="flex items-start justify-between mb-3">
             <div>
