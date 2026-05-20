@@ -4,7 +4,7 @@ import { MobileShell } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, ArrowRight, Camera, Heart } from "lucide-react";
+import { Sparkles, ArrowRight, Camera, Heart, Wand2, Shirt } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { sugerirLook, avaliarClosetParaLook, type Peca } from "@/lib/look-suggester";
