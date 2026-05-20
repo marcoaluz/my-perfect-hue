@@ -198,6 +198,16 @@ function Estilo() {
     setPenteadoEscolhido(null);
   };
 
+  const abrirFavorito = (f: typeof favoritos[number]) => {
+    setOcasiao(f.ocasiao as Ocasiao);
+    if (f.formato_rosto) setFormato(f.formato_rosto as FormatoRosto);
+    if (f.cabelo_comprimento) setComprimento(f.cabelo_comprimento as CabeloComprimento);
+    if (f.cabelo_textura) setTextura(f.cabelo_textura as CabeloTextura);
+    if (f.penteado_id) setPenteadoEscolhido(f.penteado_id);
+    setEtapa("resultado");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   const salvarConsulta = async () => {
     if (!user || !ocasiao) return;
     const { error } = await supabase.from("consultas_salvas").insert({
