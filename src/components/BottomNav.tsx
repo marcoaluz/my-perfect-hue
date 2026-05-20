@@ -1,12 +1,11 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Camera, Shirt, Sparkles, Wand2, User } from "lucide-react";
+import { Home, Camera, Shirt, Wand2, User } from "lucide-react";
 
 const items = [
   { to: "/", label: "Início", icon: Home },
   { to: "/analise", label: "Análise", icon: Camera },
   { to: "/closet", label: "Closet", icon: Shirt },
   { to: "/estilo", label: "Estilo", icon: Wand2 },
-  { to: "/looks", label: "Looks", icon: Sparkles },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
@@ -25,12 +24,20 @@ export function BottomNav() {
                   active ? "text-primary scale-105" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <span
-                  className={`flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
-                    active ? "bg-accent/40" : ""
-                  }`}
-                >
-                  <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
+                <span className="relative flex h-9 w-9 items-center justify-center">
+                  {active && (
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 rounded-full bg-terracotta/25 blur-md"
+                    />
+                  )}
+                  <span
+                    className={`relative flex h-9 w-9 items-center justify-center rounded-full transition-colors ${
+                      active ? "bg-accent/50" : ""
+                    }`}
+                  >
+                    <Icon className="h-5 w-5" strokeWidth={active ? 2.4 : 1.8} />
+                  </span>
                 </span>
                 <span className="text-[10px] font-medium tracking-wide">{label}</span>
               </Link>
