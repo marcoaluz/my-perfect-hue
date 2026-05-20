@@ -225,16 +225,7 @@ function Analise() {
           </>
         )}
 
-        {step === "loading" && (
-          <div className="flex flex-col items-center justify-center py-20 text-center">
-            <div className="relative mb-8">
-              <div className="h-32 w-32 rounded-full bg-gradient-primary animate-pulse" />
-              <Sparkles className="absolute inset-0 m-auto h-10 w-10 text-primary-foreground" />
-            </div>
-            <p className="font-serif text-xl">Analisando suas cores...</p>
-            <p className="text-sm text-muted-foreground mt-2">Identificando subtom e paleta ✨</p>
-          </div>
-        )}
+        {step === "loading" && <LoadingScan />}
 
         {step === "result" && result && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
