@@ -74,6 +74,7 @@ function Estilo() {
   const [textura, setTextura] = useState<CabeloTextura | null>(null);
   const [penteadoEscolhido, setPenteadoEscolhido] = useState<string | null>(null);
   const [refreshIdx, setRefreshIdx] = useState(0);
+  const [favoritoAtivo, setFavoritoAtivo] = useState<typeof favoritos[number] | null>(null);
 
   const { data: profileFull } = useQuery({
     queryKey: ["profile-estilo", user?.id],
