@@ -562,7 +562,7 @@ function Estilo() {
 
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1 shrink-0">
-                      {maquiagem.sombra.cores.map((c, i) => (
+                      {maquiagem.sombra.cores.map((c: string, i: number) => (
                         <div
                           key={i}
                           className="h-10 w-5 rounded-md shadow-sm"
