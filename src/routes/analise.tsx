@@ -97,7 +97,8 @@ function Analise() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [region, setRegion] = useState<{ canvas: HTMLCanvasElement; cx: number; cy: number; radius: number } | null>(null);
   const [result, setResult] = useState<SubtomResult | null>(null);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
+  const galleryRef = useRef<HTMLInputElement>(null);
 
   const onFile = (f: File | null) => {
     if (!f) return;
@@ -172,12 +173,29 @@ function Analise() {
         <PageHeader eyebrow="IA local" title="Análise de subtom" subtitle="100% no seu dispositivo, sem enviar dados" />
 
         <input
-          ref={fileRef}
+          ref={cameraRef}
           type="file"
           accept="image/*"
           capture="environment"
-          hidden
-          onChange={(e) => onFile(e.target.files?.[0] ?? null)}
+          className="sr-only"
+          tabIndex={-1}
+          aria-hidden="true"
+          onChange={(e) => {
+            onFile(e.target.files?.[0] ?? null);
+            e.target.value = "";
+          }}
+        />
+        <input
+          ref={galleryRef}
+          type="file"
+          accept="image/*"
+          className="sr-only"
+          tabIndex={-1}
+          aria-hidden="true"
+          onChange={(e) => {
+            onFile(e.target.files?.[0] ?? null);
+            e.target.value = "";
+          }}
         />
 
         {step === "intro" && (
@@ -198,10 +216,21 @@ function Analise() {
             </Card>
 
             <div className="space-y-3">
-              <Button size="lg" className="w-full rounded-full bg-gradient-primary shadow-soft" onClick={() => fileRef.current?.click()}>
+              <Button
+                size="lg"
+                type="button"
+                className="w-full rounded-full bg-gradient-primary shadow-soft"
+                onClick={() => cameraRef.current?.click()}
+              >
                 <Camera className="h-4 w-4" /> Tirar foto
               </Button>
-              <Button size="lg" variant="outline" className="w-full rounded-full" onClick={() => fileRef.current?.click()}>
+              <Button
+                size="lg"
+                type="button"
+                variant="outline"
+                className="w-full rounded-full"
+                onClick={() => galleryRef.current?.click()}
+              >
                 <ImageIcon className="h-4 w-4" /> Escolher da galeria
               </Button>
             </div>
