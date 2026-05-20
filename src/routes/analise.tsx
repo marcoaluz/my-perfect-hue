@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Camera, ImageIcon, Sparkles, Sun, ArrowRight, Check } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
@@ -97,8 +97,6 @@ function Analise() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [region, setRegion] = useState<{ canvas: HTMLCanvasElement; cx: number; cy: number; radius: number } | null>(null);
   const [result, setResult] = useState<SubtomResult | null>(null);
-  const cameraRef = useRef<HTMLInputElement>(null);
-  const galleryRef = useRef<HTMLInputElement>(null);
 
   const onFile = (f: File | null) => {
     if (!f) return;
@@ -173,7 +171,7 @@ function Analise() {
         <PageHeader eyebrow="IA local" title="Análise de subtom" subtitle="100% no seu dispositivo, sem enviar dados" />
 
         <input
-          ref={cameraRef}
+          id="analise-camera-input"
           type="file"
           accept="image/*"
           capture="environment"
@@ -186,7 +184,7 @@ function Analise() {
           }}
         />
         <input
-          ref={galleryRef}
+          id="analise-gallery-input"
           type="file"
           accept="image/*"
           className="sr-only"
@@ -216,23 +214,25 @@ function Analise() {
             </Card>
 
             <div className="space-y-3">
-              <Button
-                size="lg"
-                type="button"
-                className="w-full rounded-full bg-gradient-primary shadow-soft"
-                onClick={() => cameraRef.current?.click()}
+              <label
+                htmlFor="analise-camera-input"
+                className={buttonVariants({
+                  size: "lg",
+                  className: "w-full rounded-full bg-gradient-primary shadow-soft cursor-pointer touch-manipulation select-none",
+                })}
               >
                 <Camera className="h-4 w-4" /> Tirar foto
-              </Button>
-              <Button
-                size="lg"
-                type="button"
-                variant="outline"
-                className="w-full rounded-full"
-                onClick={() => galleryRef.current?.click()}
+              </label>
+              <label
+                htmlFor="analise-gallery-input"
+                className={buttonVariants({
+                  size: "lg",
+                  variant: "outline",
+                  className: "w-full rounded-full cursor-pointer touch-manipulation select-none",
+                })}
               >
                 <ImageIcon className="h-4 w-4" /> Escolher da galeria
-              </Button>
+              </label>
             </div>
           </>
         )}
