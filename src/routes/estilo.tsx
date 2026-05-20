@@ -18,11 +18,12 @@ import {
   sugerirMaquiagem,
   sugerirJoias,
 } from "@/lib/style-suggester";
-import type {
+import {
   FormatoRosto,
   CabeloComprimento,
   CabeloTextura,
   Ocasiao,
+  PENTEADOS,
 } from "@/lib/hairstyle-catalog";
 import { sugerirLook, type Peca } from "@/lib/look-suggester";
 
