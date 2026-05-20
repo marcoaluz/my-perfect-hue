@@ -5,6 +5,7 @@ import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Sparkles, ArrowLeft, RefreshCw, Heart,
   PartyPopper, Briefcase, Coffee, Heart as HeartIcon,
