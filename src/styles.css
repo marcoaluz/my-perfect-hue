@@ -53,9 +53,10 @@
   /* Brand palette mapped to oklch */
   --rose-dust: oklch(0.79 0.045 18);       /* #E8B4B8 */
   --nude: oklch(0.93 0.022 40);            /* #F5E6E0 */
-  --terracotta: oklch(0.61 0.10 38);       /* #C97B63 */
+  --terracotta: oklch(0.60 0.12 35);       /* #C97765 — mais saturado */
   --champagne: oklch(0.79 0.06 65);        /* #D4AF8C */
   --sage: oklch(0.74 0.03 140);            /* #A8B5A0 */
+  --lilac: oklch(0.85 0.05 305);           /* #D8C7F7 — destaque IA/Premium */
   --graphite: oklch(0.27 0 0);             /* #2C2C2C */
   --offwhite: oklch(0.985 0.005 60);       /* #FAF7F5 */
 
