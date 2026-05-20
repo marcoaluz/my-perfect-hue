@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Sparkles } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -59,9 +60,18 @@ function Cadastro() {
 
   return (
     <div className="mx-auto flex min-h-screen w-full max-w-md flex-col px-6 py-10">
-      <div className="mb-8">
-        <h1 className="font-serif text-3xl">Crie sua conta</h1>
-        <p className="text-sm text-muted-foreground mt-1">Leva menos de um minuto ✨</p>
+      <div className="relative mb-10 text-center">
+        <div
+          aria-hidden
+          className="absolute inset-x-0 -top-8 mx-auto h-40 w-40 rounded-full bg-gradient-primary opacity-30 blur-3xl"
+        />
+        <div className="relative mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-primary shadow-card">
+          <Sparkles className="h-7 w-7 text-primary-foreground" />
+        </div>
+        <h1 className="relative font-serif text-3xl leading-tight">Crie sua conta</h1>
+        <p className="relative text-sm text-muted-foreground mt-3">
+          Comece sua transformação de estilo ✨
+        </p>
       </div>
 
       <form className="space-y-4" onSubmit={onSubmit}>
