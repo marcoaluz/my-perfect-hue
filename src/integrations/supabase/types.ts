@@ -44,6 +44,51 @@ export type Database = {
         }
         Relationships: []
       }
+      consultas_salvas: {
+        Row: {
+          cabelo_comprimento: string | null
+          cabelo_textura: string | null
+          created_at: string | null
+          favorito: boolean | null
+          formato_rosto: string | null
+          id: string
+          joias: Json | null
+          maquiagem: Json | null
+          ocasiao: string
+          pecas_look: string[] | null
+          penteado_id: string | null
+          user_id: string
+        }
+        Insert: {
+          cabelo_comprimento?: string | null
+          cabelo_textura?: string | null
+          created_at?: string | null
+          favorito?: boolean | null
+          formato_rosto?: string | null
+          id?: string
+          joias?: Json | null
+          maquiagem?: Json | null
+          ocasiao: string
+          pecas_look?: string[] | null
+          penteado_id?: string | null
+          user_id: string
+        }
+        Update: {
+          cabelo_comprimento?: string | null
+          cabelo_textura?: string | null
+          created_at?: string | null
+          favorito?: boolean | null
+          formato_rosto?: string | null
+          id?: string
+          joias?: Json | null
+          maquiagem?: Json | null
+          ocasiao?: string
+          pecas_look?: string[] | null
+          penteado_id?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       looks: {
         Row: {
           created_at: string
@@ -103,7 +148,10 @@ export type Database = {
       }
       profiles: {
         Row: {
+          cabelo_comprimento: string | null
+          cabelo_textura: string | null
           created_at: string
+          formato_rosto: string | null
           id: string
           nome: string | null
           onboarding_completed: boolean
@@ -112,7 +160,10 @@ export type Database = {
           subtom: string | null
         }
         Insert: {
+          cabelo_comprimento?: string | null
+          cabelo_textura?: string | null
           created_at?: string
+          formato_rosto?: string | null
           id: string
           nome?: string | null
           onboarding_completed?: boolean
@@ -121,7 +172,10 @@ export type Database = {
           subtom?: string | null
         }
         Update: {
+          cabelo_comprimento?: string | null
+          cabelo_textura?: string | null
           created_at?: string
+          formato_rosto?: string | null
           id?: string
           nome?: string | null
           onboarding_completed?: boolean
