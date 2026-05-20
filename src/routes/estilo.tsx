@@ -65,6 +65,94 @@ const TEXTURAS: { id: CabeloTextura; label: string }[] = [
   { id: "crespo", label: "Crespo" },
 ];
 
+function ConsultasSalvas({
+  userId,
+  onAbrir,
+}: {
+  userId: string;
+  onAbrir: (f: any) => void;
+}) {
+  const qc = useQueryClient();
+  const { data: consultas = [] } = useQuery({
+    queryKey: ["consultas_salvas", userId],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("consultas_salvas")
+        .select("*")
+        .eq("user_id", userId)
+        .eq("favorito", true)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const excluir = async (id: string) => {
+    const { error } = await supabase.from("consultas_salvas").delete().eq("id", id);
+    if (error) return toast.error("Erro ao excluir");
+    toast.success("Removido dos favoritos");
+    qc.invalidateQueries({ queryKey: ["consultas_salvas"] });
+  };
+
+  if (consultas.length === 0) {
+    return (
+      <div className="text-center py-12 px-4">
+        <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-secondary/60">
+          <Heart className="h-7 w-7 text-muted-foreground" strokeWidth={1.6} />
+        </div>
+        <p className="font-serif text-lg mb-1">Nenhuma consulta salva ainda</p>
+        <p className="text-sm text-muted-foreground max-w-xs mx-auto">
+          Toque no ❤️ ao finalizar uma consulta pra salvá-la aqui
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-2">
+      {consultas.map((c) => {
+        const m = c.maquiagem as { batom?: { cor?: string }; blush?: { cor?: string }; sombra?: { cores?: string[] } } | null;
+        const j = c.joias as { metal_hex?: string } | null;
+        return (
+          <Card key={c.id} className="rounded-2xl p-4 border-border/60 flex items-center gap-3">
+            <button
+              onClick={() => onAbrir(c)}
+              className="flex items-center gap-3 flex-1 min-w-0 text-left"
+            >
+              <div className="flex -space-x-1 shrink-0">
+                {m?.batom?.cor && (
+                  <div className="h-8 w-8 rounded-full border-2 border-background shadow-sm" style={{ background: m.batom.cor }} />
+                )}
+                {m?.blush?.cor && (
+                  <div className="h-8 w-8 rounded-full border-2 border-background shadow-sm" style={{ background: m.blush.cor }} />
+                )}
+                {j?.metal_hex && (
+                  <div className="h-8 w-8 rounded-full border-2 border-background shadow-sm" style={{ background: j.metal_hex }} />
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-medium capitalize text-sm">{c.ocasiao}</p>
+                <p className="text-[11px] text-muted-foreground">
+                  {new Date(c.created_at!).toLocaleDateString("pt-BR", { day: "2-digit", month: "short" })}
+                  {c.pecas_look?.length ? ` · ${c.pecas_look.length} peças` : ""}
+                </p>
+              </div>
+            </button>
+            <button
+              onClick={() => excluir(c.id)}
+              className="p-2 text-muted-foreground hover:text-destructive"
+              aria-label="Excluir"
+            >
+              <Trash2 className="h-4 w-4" />
+            </button>
+          </Card>
+        );
+      })}
+    </div>
+  );
+}
+
 function Estilo() {
   const { user, loading, profile } = useRequireAuth();
   const qc = useQueryClient();
