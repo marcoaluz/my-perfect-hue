@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sparkles, ArrowLeft, RefreshCw, Heart,
   PartyPopper, Briefcase, Coffee, Heart as HeartIcon,
-  Sun, Activity, Check,
+  Sun, Activity, Check, Trash2,
 } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
