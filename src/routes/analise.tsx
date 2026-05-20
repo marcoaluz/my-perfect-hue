@@ -1,16 +1,86 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Camera, ImageIcon, Sparkles, Sun, ArrowRight } from "lucide-react";
+import { Camera, ImageIcon, Sparkles, Sun, ArrowRight, Check } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { SkinPicker } from "@/components/SkinPicker";
 import { analyzeRegion, type SubtomResult } from "@/lib/skin-analyzer";
+
+function LoadingScan() {
+  const [stage, setStage] = useState(0);
+  const stages = [
+    "Analisando pele",
+    "Detectando subtom",
+    "Avaliando contraste",
+    "Montando paleta",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStage((s) => (s < stages.length - 1 ? s + 1 : s));
+    }, 600);
+    return () => clearInterval(interval);
+  }, [stages.length]);
+
+  return (
+    <div className="flex flex-col items-center justify-center py-16 text-center">
+      <div className="relative mb-8 h-32 w-32">
+        <div aria-hidden className="absolute inset-0 rounded-full bg-gradient-primary opacity-40 blur-2xl animate-pulse" />
+        <div className="absolute inset-0 rounded-full bg-gradient-primary" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Sparkles className="h-10 w-10 text-primary-foreground" />
+        </div>
+        <div
+          aria-hidden
+          className="absolute inset-0 rounded-full border-2 border-terracotta/40 animate-ping"
+          style={{ animationDuration: "1.8s" }}
+        />
+        <div
+          aria-hidden
+          className="absolute -inset-2 rounded-full border border-terracotta/30 animate-ping"
+          style={{ animationDuration: "2.4s" }}
+        />
+      </div>
+
+      <h2 className="font-serif text-xl mb-6">Analisando suas cores...</h2>
+
+      <ul className="space-y-2.5 text-left">
+        {stages.map((s, i) => (
+          <li key={s} className="flex items-center gap-3 text-sm">
+            <span className="flex h-6 w-6 items-center justify-center shrink-0">
+              {i < stage ? (
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-sage/30 text-sage">
+                  <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                </span>
+              ) : i === stage ? (
+                <span className="h-3 w-3 rounded-full bg-terracotta animate-pulse" />
+              ) : (
+                <span className="h-2.5 w-2.5 rounded-full bg-border" />
+              )}
+            </span>
+            <span
+              className={
+                i < stage
+                  ? "text-foreground"
+                  : i === stage
+                  ? "text-terracotta font-medium"
+                  : "text-muted-foreground"
+              }
+            >
+              {s}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/analise")({
   component: Analise,
