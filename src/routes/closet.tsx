@@ -103,7 +103,11 @@ function Closet() {
 
   const onFileSelected = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      setClickedUpload(false);
+      return;
+    }
+    setClickedUpload(false);
     setDetectingColor(true);
     const objectUrl = URL.createObjectURL(file);
     setPreviewUrl(objectUrl);
