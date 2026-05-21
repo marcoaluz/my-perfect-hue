@@ -38,6 +38,7 @@ function Closet() {
   const [detectingColor, setDetectingColor] = useState(false);
   const [uploadProgress, setUploadProgress] = useState<"idle" | "uploading" | "done">("idle");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [clickedUpload, setClickedUpload] = useState(false);
   const [pecaParaDeletar, setPecaParaDeletar] = useState<string | null>(null);
 
   const deletarPeca = async () => {
