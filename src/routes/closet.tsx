@@ -298,7 +298,6 @@ function Closet() {
               ref={fileInputRef}
               type="file"
               accept="image/*"
-              capture="environment"
               hidden
               onChange={onFileSelected}
             />
@@ -306,12 +305,30 @@ function Closet() {
             {!previewUrl ? (
               <button
                 type="button"
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full aspect-square rounded-2xl border-2 border-dashed border-border bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:bg-secondary/50 transition-colors"
+                onClick={() => {
+                  setClickedUpload(true);
+                  setTimeout(() => setClickedUpload(false), 3000);
+                  fileInputRef.current?.click();
+                }}
+                disabled={clickedUpload}
+                className={`w-full aspect-square rounded-2xl border-2 border-dashed bg-secondary/30 flex flex-col items-center justify-center gap-2 text-muted-foreground transition-all ${
+                  clickedUpload
+                    ? "border-terracotta bg-terracotta/5 scale-95"
+                    : "border-border hover:bg-secondary/50 hover:border-terracotta/40"
+                }`}
               >
-                <Camera className="h-8 w-8" />
-                <p className="text-sm font-medium">Toque para tirar foto</p>
-                <p className="text-xs">ou escolher da galeria</p>
+                {clickedUpload ? (
+                  <>
+                    <div className="h-8 w-8 rounded-full border-2 border-terracotta border-t-transparent animate-spin" />
+                    <p className="text-sm font-medium text-terracotta">Abrindo...</p>
+                  </>
+                ) : (
+                  <>
+                    <Camera className="h-8 w-8" />
+                    <p className="text-sm font-medium">Toque para tirar foto</p>
+                    <p className="text-xs">ou escolher da galeria</p>
+                  </>
+                )}
               </button>
             ) : (
               <div className="relative aspect-square rounded-2xl overflow-hidden bg-secondary">
