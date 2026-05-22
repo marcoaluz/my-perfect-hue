@@ -92,6 +92,13 @@ function Cadastro() {
         </Button>
       </form>
 
+      <p className="mt-6 text-center text-xs text-muted-foreground leading-relaxed">
+        Ao continuar, você concorda com nossos{" "}
+        <Link to="/termos" className="text-terracotta font-medium">Termos de Uso</Link>{" "}
+        e{" "}
+        <Link to="/privacidade" className="text-terracotta font-medium">Política de Privacidade</Link>.
+      </p>
+
       <p className="mt-8 text-center text-sm text-muted-foreground">
         Já tem conta?{" "}
         <Link to="/login" className="text-terracotta font-medium">Entrar</Link>
