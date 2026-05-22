@@ -61,6 +61,18 @@ function Dashboard() {
     },
   });
 
+  const { data: consultas = [] } = useQuery({
+    queryKey: ["consultas", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("consultas_salvas")
+        .select("id")
+        .eq("user_id", user!.id);
+      return data || [];
+    },
+  });
+
   if (loading || !user) return null;
 
   const nome = profile?.nome || user.email?.split("@")[0] || "você";
