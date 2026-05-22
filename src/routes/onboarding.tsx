@@ -81,12 +81,14 @@ function Onboarding() {
   const completeOnboarding = async (to: "/analise" | "/", includePrefs = false) => {
     if (!user) return;
     setSaving(true);
-    const payload: Record<string, unknown> = { onboarding_completed: true };
-    if (includePrefs) {
-      payload.formato_rosto = formatoRosto;
-      payload.cabelo_comprimento = cabeloComprimento;
-      payload.cabelo_textura = cabeloTextura;
-    }
+    const payload = includePrefs
+      ? {
+          onboarding_completed: true,
+          formato_rosto: formatoRosto,
+          cabelo_comprimento: cabeloComprimento,
+          cabelo_textura: cabeloTextura,
+        }
+      : { onboarding_completed: true };
     const { error } = await supabase.from("profiles").update(payload).eq("id", user.id);
     setSaving(false);
     if (error) {
