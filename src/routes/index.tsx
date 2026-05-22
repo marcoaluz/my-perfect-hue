@@ -4,7 +4,7 @@ import { MobileShell } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, ArrowRight, Camera, Heart, Wand2, Shirt } from "lucide-react";
+import { Sparkles, ArrowRight, Camera, Heart, Wand2, Shirt, TrendingUp, Palette } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { sugerirLook, avaliarClosetParaLook, type Peca } from "@/lib/look-suggester";
@@ -58,6 +58,18 @@ function Dashboard() {
         .select("*")
         .eq("user_id", user!.id);
       return (data || []) as Peca[];
+    },
+  });
+
+  const { data: consultas = [] } = useQuery({
+    queryKey: ["consultas", user?.id],
+    enabled: !!user,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("consultas_salvas")
+        .select("id")
+        .eq("user_id", user!.id);
+      return data || [];
     },
   });
 
@@ -190,13 +202,73 @@ function Dashboard() {
         </Card>
 
         <Card className="rounded-3xl p-5 border-border/60 shadow-soft">
-          <div className="flex items-center justify-between mb-3">
-            <h3 className="font-serif text-lg flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-terracotta" /> Descobertas
-            </h3>
-            <ArrowRight className="h-4 w-4 text-muted-foreground" />
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <h3 className="font-serif text-lg flex items-center gap-2">
+                <TrendingUp className="h-4 w-4 text-terracotta" />
+                Seu resumo
+              </h3>
+              <p className="text-xs text-muted-foreground mt-0.5">Últimos 7 dias</p>
+            </div>
           </div>
-          <p className="text-sm text-muted-foreground">Em breve, sugestões personalizadas para você.</p>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-terracotta/10 flex items-center justify-center">
+                  <Shirt className="h-4 w-4 text-terracotta" />
+                </div>
+                <p className="text-sm">Peças no closet</p>
+              </div>
+              <p className="text-lg font-serif">{pecas.length}</p>
+            </div>
+
+            {temAnalise && (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-8 w-8 rounded-full bg-terracotta/10 flex items-center justify-center">
+                    <Palette className="h-4 w-4 text-terracotta" />
+                  </div>
+                  <p className="text-sm">Sua paleta</p>
+                </div>
+                <p className="text-sm font-medium capitalize">{profile?.paleta_sazonal?.split(" ")[0] || ultimaAnalise?.subtom_detectado}</p>
+              </div>
+            )}
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-terracotta/10 flex items-center justify-center">
+                  <Wand2 className="h-4 w-4 text-terracotta" />
+                </div>
+                <p className="text-sm">Looks criados</p>
+              </div>
+              <p className="text-lg font-serif">{lookHoje ? "1" : "0"}</p>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-terracotta/10 flex items-center justify-center">
+                  <Sparkles className="h-4 w-4 text-terracotta" />
+                </div>
+                <p className="text-sm">Consultas salvas</p>
+              </div>
+              <p className="text-lg font-serif">{consultas.length}</p>
+            </div>
+          </div>
+
+          {pecas.length === 0 && !temAnalise ? (
+            <div className="mt-4 pt-4 border-t border-border/40">
+              <p className="text-xs text-muted-foreground text-center">
+                Complete sua análise e adicione peças pra ver seu progresso ✨
+              </p>
+            </div>
+          ) : pecas.length >= 10 ? (
+            <div className="mt-4 pt-4 border-t border-border/40">
+              <p className="text-xs text-terracotta text-center font-medium">
+                🎉 Parabéns! Seu closet está ganhando vida
+              </p>
+            </div>
+          ) : null}
         </Card>
       </MobileShell>
       <BottomNav />
