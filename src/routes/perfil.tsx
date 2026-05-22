@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MobileShell } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Card } from "@/components/ui/card";
-import { Camera, Crown, Settings, LogOut, ChevronRight } from "lucide-react";
+import { Camera, Settings, LogOut, ChevronRight, Shield, FileText } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -34,8 +34,9 @@ function Perfil() {
 
   const items = [
     { icon: Camera, label: "Refazer análise", action: () => navigate({ to: "/analise" }) },
-    { icon: Crown, label: "Plano Premium", highlight: true, action: () => navigate({ to: "/perfil" }) },
     { icon: Settings, label: "Configurações", action: () => navigate({ to: "/configuracoes" }) },
+    { icon: Shield, label: "Privacidade", action: () => navigate({ to: "/privacidade" }) },
+    { icon: FileText, label: "Termos de uso", action: () => navigate({ to: "/termos" }) },
     { icon: LogOut, label: "Sair", action: sair },
   ];
 
