@@ -698,17 +698,10 @@ function Estilo() {
               <Card className="rounded-3xl p-5 mb-4 border-border/60 shadow-soft">
                 <h3 className="font-serif text-lg mb-3">💎 Joias e acessórios</h3>
                 <div className="flex items-start gap-3">
-                  <div className="h-20 w-20 rounded-2xl overflow-hidden shadow-soft border border-white/60 shrink-0">
-                    <img
-                      src={getJoiaImageUrl(joias.metal)}
-                      alt={joias.metal}
-                      className="h-full w-full object-cover"
-                      onError={(e) => {
-                        e.currentTarget.style.display = "none";
-                        e.currentTarget.parentElement!.style.background = joias.metal_hex;
-                      }}
-                    />
-                  </div>
+                  <div
+                    className="h-20 w-20 rounded-2xl bg-secondary/40 flex items-center justify-center shrink-0 border border-border/40 shadow-soft"
+                    dangerouslySetInnerHTML={{ __html: getJoiaSVG(joias.metal) }}
+                  />
                   <div className="min-w-0">
                     <p className="text-sm font-medium">{joias.metal}</p>
                     <p className="text-xs text-muted-foreground">{joias.estilo}</p>
