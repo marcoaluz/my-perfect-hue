@@ -45,7 +45,7 @@ const BENEFICIOS_PREMIUM = [
 ];
 
 const BENEFICIOS_EM_BREVE = [
-  "✨ Penteado virtual na sua foto (IA)",
+  "✨ Veja como cada penteado fica em você — com sua cor de cabelo real",
   "👗 Experimente roupas virtualmente (IA)",
   "🎯 Score de harmonia do seu look",
 ];
