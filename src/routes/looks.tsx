@@ -54,8 +54,8 @@ function Looks() {
     },
   });
 
-  const today = new Date().toISOString().split("T")[0];
-  const seed = `${user?.id || "anon"}_${today}_v${refreshIdx}`;
+  const dayIndex = Math.floor(Date.now() / 86400000);
+  const seed = `${user?.id || "anon"}_day${dayIndex}_v${refreshIdx}`;
 
   const avaliacao = useMemo(() => avaliarClosetParaLook(pecas), [pecas]);
   const sugestao = useMemo(() => {

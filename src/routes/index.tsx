@@ -80,8 +80,8 @@ function Dashboard() {
   const temAnalise = !!ultimaAnalise;
 
   const avaliacao = avaliarClosetParaLook(pecas);
-  const today = new Date().toISOString().split("T")[0];
-  const lookHoje = avaliacao.ok ? sugerirLook(pecas, `${user.id}_${today}_v0`) : null;
+  const dayIndex = Math.floor(Date.now() / 86400000);
+  const lookHoje = avaliacao.ok ? sugerirLook(pecas, `${user.id}_day${dayIndex}_v0`) : null;
 
   const hora = new Date().getHours();
   const saudacao = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
