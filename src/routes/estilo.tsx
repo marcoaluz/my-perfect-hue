@@ -153,15 +153,42 @@ function ConsultasSalvas({
   );
 }
 
-function getJoiaImageUrl(metal: string): string {
-  const metalLower = (metal || "").toLowerCase();
-  if (metalLower.includes("prata") || metalLower.includes("branco")) {
-    return "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&q=80&fit=crop";
+function getJoiaSVG(metal: string): string {
+  const m = (metal || "").toLowerCase();
+  // PRATA / FRIO: Brinco argola com pérola
+  if (m.includes("prata") || m.includes("branco") || m.includes("platina")) {
+    return `<svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="80" r="44" fill="none" stroke="#B8C4CC" stroke-width="10"/>
+      <circle cx="60" cy="80" r="28" fill="#F0F4F7"/>
+      <line x1="60" y1="126" x2="60" y2="142" stroke="#A0B0BC" stroke-width="2"/>
+      <circle cx="60" cy="158" r="16" fill="#DDE6EE" stroke="#B8CAD6" stroke-width="1.5"/>
+      <ellipse cx="54" cy="152" rx="5" ry="4" fill="white" opacity="0.7"/>
+      <rect x="52" y="32" width="16" height="8" rx="3" fill="#A0B0BC"/>
+    </svg>`;
   }
-  if (metalLower.includes("ros") || metalLower.includes("rosê")) {
-    return "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=200&q=80&fit=crop";
+  // ROSÊ: Brinco gota
+  if (m.includes("ros") || m.includes("rosê")) {
+    return `<svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 36 Q82 36 82 58 Q82 74 60 76 Q38 74 38 58 Q38 36 60 36Z"
+            fill="none" stroke="#C89080" stroke-width="6"/>
+      <line x1="60" y1="76" x2="60" y2="90" stroke="#C08878" stroke-width="2.5"/>
+      <path d="M60 90 Q40 112 40 132 Q40 156 60 160 Q80 156 80 132 Q80 112 60 90Z"
+            fill="#E0A090" stroke="#C08878" stroke-width="1.5"/>
+      <ellipse cx="53" cy="114" rx="7" ry="10" fill="white" opacity="0.30"/>
+    </svg>`;
   }
-  return "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=200&q=80&fit=crop";
+  // DOURADO / QUENTE: Colar com pingente hexagonal
+  return `<svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 70 Q60 48 104 70" fill="none" stroke="#C09840" stroke-width="3.5" stroke-linecap="round"/>
+    <ellipse cx="16" cy="70" rx="7" ry="5" fill="none" stroke="#C09840" stroke-width="2"/>
+    <ellipse cx="104" cy="70" rx="7" ry="5" fill="none" stroke="#C09840" stroke-width="2"/>
+    <line x1="60" y1="48" x2="60" y2="86" stroke="#C09840" stroke-width="2.5"/>
+    <polygon points="60,88 76,98 76,118 60,128 44,118 44,98"
+             fill="#D4A840" stroke="#A88030" stroke-width="1.5"/>
+    <polygon points="60,96 70,102 70,114 60,120 50,114 50,102"
+             fill="#E8C060"/>
+    <ellipse cx="55" cy="100" rx="4" ry="5" fill="white" opacity="0.28"/>
+  </svg>`;
 }
 
 function Estilo() {
