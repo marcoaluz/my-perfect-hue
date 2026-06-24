@@ -7,7 +7,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
-  Sparkles, ArrowLeft, RefreshCw, Heart,
+  Sparkles, ArrowLeft, ArrowRight, RefreshCw, Heart,
   PartyPopper, Briefcase, Coffee, Heart as HeartIcon,
   Sun, Activity, Check, Trash2,
 } from "lucide-react";
@@ -165,6 +165,7 @@ function Estilo() {
   const [penteadoEscolhido, setPenteadoEscolhido] = useState<string | null>(null);
   const [refreshIdx, setRefreshIdx] = useState(0);
   const [favoritoAtivo, setFavoritoAtivo] = useState<any>(null);
+  const [ultimaOcasiao, setUltimaOcasiao] = useState<Ocasiao | null>(null);
 
   const { data: profileFull } = useQuery({
     queryKey: ["profile-estilo", user?.id],
@@ -202,6 +203,8 @@ function Estilo() {
       if (profileFull.cabelo_comprimento) setComprimento(profileFull.cabelo_comprimento as CabeloComprimento);
       if (profileFull.cabelo_textura) setTextura(profileFull.cabelo_textura as CabeloTextura);
     }
+    const saved = localStorage.getItem("mtp_ultima_ocasiao") as Ocasiao | null;
+    if (saved) setUltimaOcasiao(saved);
   }, [profileFull]);
 
   const temPreferencias = !!profileFull?.formato_rosto && !!profileFull?.cabelo_comprimento && !!profileFull?.cabelo_textura;
@@ -243,6 +246,8 @@ function Estilo() {
 
   const escolherOcasiao = (o: Ocasiao) => {
     setOcasiao(o);
+    setUltimaOcasiao(o);
+    localStorage.setItem("mtp_ultima_ocasiao", o);
     if (temPreferencias) {
       setEtapa("loading");
       setTimeout(() => setEtapa("resultado"), 800);
@@ -351,6 +356,25 @@ function Estilo() {
                 subtitle="Vou montar um look completo pra você"
               />
               <div className="grid grid-cols-2 gap-3">
+                {ultimaOcasiao && (
+                  <button
+                    onClick={() => escolherOcasiao(ultimaOcasiao)}
+                    className="col-span-2 mb-1"
+                  >
+                    <Card className="rounded-2xl p-4 border-terracotta/40 bg-terracotta/5 border-2 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <Sparkles className="h-5 w-5 text-terracotta" />
+                        <div className="text-left">
+                          <p className="text-sm font-medium">Repetir última consulta</p>
+                          <p className="text-xs text-muted-foreground capitalize">
+                            {ultimaOcasiao} · toque pra usar de novo
+                          </p>
+                        </div>
+                      </div>
+                      <ArrowRight className="h-4 w-4 text-terracotta" />
+                    </Card>
+                  </button>
+                )}
                 {OCASIOES.map(({ id, label, icon: Icon, cor }) => (
                   <button
                     key={id}
