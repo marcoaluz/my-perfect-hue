@@ -190,7 +190,13 @@ export const PENTEADOS: Penteado[] = [
     id: "long-bob",
     nome: "Long bob (lob)",
     descricao: "Versátil, moderno, fica bem em tudo",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="26" ry="32" fill="currentColor" opacity="0.15"/><path d="M32 68 L32 116 L88 116 L88 68 Q88 48 60 48 Q32 48 32 68" fill="currentColor" opacity="0.55"/></svg>`,
+    svg: `<svg ${SVG_BASE_STYLE}>
+      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="114" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M32 72 Q34 46 60 44 Q86 46 88 72 L88 108 Q68 116 60 116 Q52 116 32 108 Z"
+            fill="currentColor" opacity="0.60"/>
+      <path d="M32 106 Q60 114 88 106" stroke="currentColor" stroke-width="1" fill="none" opacity="0.25"/>
+    </svg>`,
     formatos: ["oval", "redondo", "quadrado", "alongado", "coracao"],
     comprimentos: ["medio"],
     texturas: ["liso", "ondulado"],
