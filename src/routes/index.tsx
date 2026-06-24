@@ -4,7 +4,7 @@ import { MobileShell } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, ArrowRight, Camera, Heart, Wand2, Shirt, TrendingUp, Palette } from "lucide-react";
+import { Sparkles, ArrowRight, Camera, Heart, Wand2, Shirt, TrendingUp, Palette, Zap } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { sugerirLook, avaliarClosetParaLook, type Peca } from "@/lib/look-suggester";
@@ -278,6 +278,23 @@ function Dashboard() {
             </div>
           ) : null}
         </Card>
+
+        <Link to="/premium">
+          <Card className="rounded-2xl p-4 border-terracotta/30 bg-gradient-to-r from-lilac/10 to-terracotta/5 shadow-soft hover:shadow-card transition-shadow">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="flex h-10 w-10 items-center justify-center rounded-full bg-lilac/20">
+                  <Zap className="h-5 w-5 text-lilac" />
+                </span>
+                <div>
+                  <p className="text-sm font-medium">Penteado virtual com IA</p>
+                  <p className="text-xs text-muted-foreground">Em breve no Premium · Saiba mais ✨</p>
+                </div>
+              </div>
+              <ArrowRight className="h-4 w-4 text-terracotta" />
+            </div>
+          </Card>
+        </Link>
       </MobileShell>
       <BottomNav />
     </>

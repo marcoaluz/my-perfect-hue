@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { MobileShell } from "@/components/MobileShell";
 import { BottomNav } from "@/components/BottomNav";
 import { Card } from "@/components/ui/card";
-import { Camera, Settings, LogOut, ChevronRight, Shield, FileText } from "lucide-react";
+import { Camera, Settings, LogOut, ChevronRight, Shield, FileText, Sparkles } from "lucide-react";
 import { useRequireAuth } from "@/hooks/useRequireAuth";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -34,6 +34,7 @@ function Perfil() {
 
   const items = [
     { icon: Camera, label: "Refazer análise", action: () => navigate({ to: "/analise" }) },
+    { icon: Sparkles, label: "Plano Premium ✨", action: () => navigate({ to: "/premium" }) },
     { icon: Settings, label: "Configurações", action: () => navigate({ to: "/configuracoes" }) },
     { icon: Shield, label: "Privacidade", action: () => navigate({ to: "/privacidade" }) },
     { icon: FileText, label: "Termos de uso", action: () => navigate({ to: "/termos" }) },
@@ -55,8 +56,8 @@ function Perfil() {
           </div>
           <h1 className="font-serif text-2xl">{profile?.nome || "—"}</h1>
           <p className="text-sm text-muted-foreground">{user.email}</p>
-          <span className="mt-3 inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium capitalize">
-            Plano {profile?.plano || "free"}
+          <span className={`mt-3 inline-block rounded-full px-3 py-1 text-xs font-medium capitalize ${profile?.plano === "premium" ? "bg-gradient-primary text-primary-foreground" : "bg-secondary"}`}>
+            {profile?.plano === "premium" ? "✨ Premium" : "Plano Free"}
           </span>
         </Card>
 
