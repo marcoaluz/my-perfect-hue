@@ -94,7 +94,15 @@ function Dashboard() {
             <p className="text-sm text-muted-foreground">{saudacao},</p>
             <h1 className="font-serif text-2xl">{nome} ✨</h1>
           </div>
-          <div className="h-11 w-11 rounded-full bg-gradient-primary shadow-soft" />
+          <div className="h-11 w-11 overflow-hidden rounded-full bg-gradient-primary shadow-soft">
+            {user.user_metadata?.avatar_url ? (
+              <img src={user.user_metadata.avatar_url} alt="Avatar" className="h-full w-full object-cover" />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-sm font-semibold text-primary-foreground">
+                {(profile?.nome || user.email || "?")[0].toUpperCase()}
+              </div>
+            )}
+          </div>
         </header>
 
         <Card className="bg-gradient-primary border-0 text-primary-foreground px-6 py-8 rounded-3xl shadow-card mb-5 relative overflow-hidden">

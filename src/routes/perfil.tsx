@@ -44,7 +44,15 @@ function Perfil() {
     <>
       <MobileShell>
         <Card className="rounded-3xl p-6 mb-5 border-border/60 shadow-card bg-gradient-soft text-center">
-          <div className="mx-auto mb-3 h-20 w-20 rounded-full bg-gradient-primary shadow-soft" />
+          <div className="mx-auto mb-3 h-20 w-20 overflow-hidden rounded-full bg-gradient-primary shadow-soft">
+            {user.user_metadata?.avatar_url ? (
+              <img src={user.user_metadata.avatar_url} alt="Avatar" className="h-full w-full object-cover" />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-lg font-semibold text-primary-foreground">
+                {(profile?.nome || user.email || "?")[0].toUpperCase()}
+              </div>
+            )}
+          </div>
           <h1 className="font-serif text-2xl">{profile?.nome || "—"}</h1>
           <p className="text-sm text-muted-foreground">{user.email}</p>
           <span className="mt-3 inline-block rounded-full bg-secondary px-3 py-1 text-xs font-medium capitalize">
