@@ -227,16 +227,16 @@ export const PENTEADOS: Penteado[] = [
     nome: "Cachos definidos",
     descricao: "Volume natural valorizado",
     svg: `<svg ${SVG_BASE_STYLE}>
-      <ellipse cx="60" cy="82" rx="26" ry="32" fill="currentColor" opacity="0.08"/>
-      <rect x="52" y="110" width="16" height="16" rx="4" fill="currentColor" opacity="0.06"/>
-      <ellipse cx="60" cy="68" rx="36" ry="30" fill="currentColor" opacity="0.35"/>
-      <circle cx="36" cy="72" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="48" cy="84" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="36" cy="96" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="84" cy="72" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="72" cy="84" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="84" cy="96" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="60" cy="105" r="7" fill="currentColor" opacity="0.55"/>
+      <ellipse cx="60" cy="95" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="118" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <ellipse cx="60" cy="72" rx="40" ry="34" fill="currentColor" opacity="0.30"/>
+      <circle cx="34" cy="70" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="48" cy="84" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="34" cy="98" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="86" cy="70" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="72" cy="84" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="86" cy="98" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="60" cy="108" r="9" fill="currentColor" opacity="0.55"/>
     </svg>`,
     formatos: ["oval", "alongado", "coracao"],
     comprimentos: ["medio", "longo"],
