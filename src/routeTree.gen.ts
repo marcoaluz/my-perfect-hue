@@ -13,6 +13,7 @@ import { Route as TermosRouteImport } from './routes/termos'
 import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as RecuperarSenhaRouteImport } from './routes/recuperar-senha'
 import { Route as PrivacidadeRouteImport } from './routes/privacidade'
+import { Route as PremiumRouteImport } from './routes/premium'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LooksRouteImport } from './routes/looks'
@@ -43,6 +44,11 @@ const RecuperarSenhaRoute = RecuperarSenhaRouteImport.update({
 const PrivacidadeRoute = PrivacidadeRouteImport.update({
   id: '/privacidade',
   path: '/privacidade',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PremiumRoute = PremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PerfilRoute = PerfilRouteImport.update({
@@ -113,6 +119,7 @@ export interface FileRoutesByFullPath {
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
   '/perfil': typeof PerfilRoute
+  '/premium': typeof PremiumRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
@@ -130,6 +137,7 @@ export interface FileRoutesByTo {
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
   '/perfil': typeof PerfilRoute
+  '/premium': typeof PremiumRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
@@ -148,6 +156,7 @@ export interface FileRoutesById {
   '/looks': typeof LooksRoute
   '/onboarding': typeof OnboardingRoute
   '/perfil': typeof PerfilRoute
+  '/premium': typeof PremiumRoute
   '/privacidade': typeof PrivacidadeRoute
   '/recuperar-senha': typeof RecuperarSenhaRoute
   '/redefinir-senha': typeof RedefinirSenhaRoute
@@ -167,6 +176,7 @@ export interface FileRouteTypes {
     | '/looks'
     | '/onboarding'
     | '/perfil'
+    | '/premium'
     | '/privacidade'
     | '/recuperar-senha'
     | '/redefinir-senha'
@@ -184,6 +194,7 @@ export interface FileRouteTypes {
     | '/looks'
     | '/onboarding'
     | '/perfil'
+    | '/premium'
     | '/privacidade'
     | '/recuperar-senha'
     | '/redefinir-senha'
@@ -201,6 +212,7 @@ export interface FileRouteTypes {
     | '/looks'
     | '/onboarding'
     | '/perfil'
+    | '/premium'
     | '/privacidade'
     | '/recuperar-senha'
     | '/redefinir-senha'
@@ -219,6 +231,7 @@ export interface RootRouteChildren {
   LooksRoute: typeof LooksRoute
   OnboardingRoute: typeof OnboardingRoute
   PerfilRoute: typeof PerfilRoute
+  PremiumRoute: typeof PremiumRoute
   PrivacidadeRoute: typeof PrivacidadeRoute
   RecuperarSenhaRoute: typeof RecuperarSenhaRoute
   RedefinirSenhaRoute: typeof RedefinirSenhaRoute
@@ -253,6 +266,13 @@ declare module '@tanstack/react-router' {
       path: '/privacidade'
       fullPath: '/privacidade'
       preLoaderRoute: typeof PrivacidadeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/premium': {
+      id: '/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof PremiumRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/perfil': {
@@ -347,6 +367,7 @@ const rootRouteChildren: RootRouteChildren = {
   LooksRoute: LooksRoute,
   OnboardingRoute: OnboardingRoute,
   PerfilRoute: PerfilRoute,
+  PremiumRoute: PremiumRoute,
   PrivacidadeRoute: PrivacidadeRoute,
   RecuperarSenhaRoute: RecuperarSenhaRoute,
   RedefinirSenhaRoute: RedefinirSenhaRoute,
