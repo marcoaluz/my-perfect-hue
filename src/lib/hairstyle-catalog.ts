@@ -269,7 +269,7 @@ export const PENTEADOS: Penteado[] = [
     id: "espace-coque",
     nome: "Space buns",
     descricao: "Divertido e jovial, com dois coques altos",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="24" ry="30" fill="currentColor" opacity="0.15"/><circle cx="60" cy="74" r="16" fill="currentColor" opacity="0.4"/><circle cx="38" cy="42" rx="11" ry="11" r="11" fill="currentColor" opacity="0.7"/><circle cx="82" cy="42" r="11" fill="currentColor" opacity="0.7"/></svg>`,
+    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="24" ry="30" fill="currentColor" opacity="0.15"/><circle cx="60" cy="74" r="16" fill="currentColor" opacity="0.4"/><circle cx="38" cy="42" r="11" fill="currentColor" opacity="0.7"/><circle cx="82" cy="42" r="11" fill="currentColor" opacity="0.7"/></svg>`,
     formatos: ["oval", "redondo", "coracao"],
     comprimentos: ["medio", "longo"],
     texturas: ["liso", "ondulado", "cacheado"],
