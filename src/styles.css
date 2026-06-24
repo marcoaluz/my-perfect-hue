@@ -97,6 +97,15 @@
   h1, h2, h3, h4, .font-serif { font-family: var(--font-serif); letter-spacing: -0.01em; }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-enter {
+  animation: fadeIn 0.25s ease-out;
+}
+
 @utility bg-gradient-primary { background-image: var(--gradient-primary); }
 @utility bg-gradient-soft { background-image: var(--gradient-soft); }
 @utility shadow-soft { box-shadow: var(--shadow-soft); }

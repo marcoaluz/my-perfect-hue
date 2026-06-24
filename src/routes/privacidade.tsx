@@ -83,7 +83,7 @@ function Privacidade() {
         <section>
           <h2 className="font-serif text-xl mb-3">7. Contato</h2>
           <p className="text-muted-foreground">
-            Dúvidas sobre privacidade? Entre em contato: [seu-email@dominio.com]
+            Dúvidas sobre privacidade? Entre em contato: meutomperfeito@gmail.com
           </p>
         </section>
       </div>

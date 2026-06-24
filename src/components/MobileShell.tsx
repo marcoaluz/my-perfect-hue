@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export function MobileShell({ children }: { children: ReactNode }) {
   return (
-    <div className="mx-auto min-h-screen w-full max-w-md px-5 pt-8 pb-28">
+    <div className="page-enter mx-auto min-h-screen w-full max-w-md px-5 pt-8 pb-28">
       {children}
     </div>
   );
