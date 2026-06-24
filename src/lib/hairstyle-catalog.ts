@@ -171,7 +171,16 @@ export const PENTEADOS: Penteado[] = [
     id: "pixie",
     nome: "Pixie cut",
     descricao: "Ousado, jovem, prático",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="26" ry="32" fill="currentColor" opacity="0.15"/><path d="M36 56 Q44 42 60 42 Q76 42 84 56 L82 74 L72 68 L60 74 L48 68 L38 74 Z" fill="currentColor" opacity="0.6"/></svg>`,
+    svg: `<svg ${SVG_BASE_STYLE}>
+      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="114" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M36 54 Q40 44 52 42 Q60 40 68 42 Q80 44 84 54 L86 70 L80 64 L72 72 L64 64 L56 72 L48 64 L40 72 L34 70 Z"
+            fill="currentColor" opacity="0.60"/>
+      <path d="M38 62 L38 86" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+      <path d="M82 62 L82 86" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+      <path d="M46 52 L46 74" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.20"/>
+      <path d="M74 52 L74 74" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.20"/>
+    </svg>`,
     formatos: ["oval", "alongado", "coracao"],
     comprimentos: ["curto"],
     texturas: ["liso", "ondulado"],
