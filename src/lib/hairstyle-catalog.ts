@@ -75,7 +75,17 @@ export const PENTEADOS: Penteado[] = [
     id: "rabo-de-cavalo-alto",
     nome: "Rabo de cavalo alto",
     descricao: "Energético, levanta o rosto",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="24" ry="30" fill="currentColor" opacity="0.18"/><circle cx="60" cy="74" r="17" fill="currentColor" opacity="0.4"/><path d="M60 44 Q48 30 42 12 Q54 36 60 44" fill="currentColor" opacity="0.7"/></svg>`,
+    svg: `<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="114" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M36 78 Q38 56 60 54 Q82 56 84 78 L82 98 Q60 94 38 98 Z"
+            fill="currentColor" opacity="0.55"/>
+      <ellipse cx="60" cy="52" rx="10" ry="5" fill="currentColor" opacity="0.88"/>
+      <path d="M53 46 Q48 32 44 16 Q52 28 60 46"
+            fill="currentColor" opacity="0.72"/>
+      <path d="M67 46 Q72 32 76 16 Q68 28 60 46"
+            fill="currentColor" opacity="0.55"/>
+    </svg>`,
     formatos: ["redondo", "quadrado", "oval"],
     comprimentos: ["medio", "longo"],
     texturas: ["liso", "ondulado", "cacheado"],
