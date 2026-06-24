@@ -57,12 +57,14 @@ export const PENTEADOS: Penteado[] = [
     id: "rabo-de-cavalo-baixo",
     nome: "Rabo de cavalo baixo",
     descricao: "Clássico, prático, combina com tudo",
-    svg: `<svg ${SVG_BASE_STYLE}>
-      <ellipse cx="60" cy="80" rx="26" ry="32" fill="currentColor" opacity="0.08"/>
-      <rect x="52" y="108" width="16" height="16" rx="4" fill="currentColor" opacity="0.06"/>
-      <path d="M34 68 Q36 42 60 40 Q84 42 86 68 L84 88 Q60 84 36 88 Z" fill="currentColor" opacity="0.55"/>
-      <path d="M52 112 Q55 130 52 150 Q58 145 60 150 Q62 145 68 150 Q65 130 68 112 Z" fill="currentColor" opacity="0.70"/>
-      <ellipse cx="60" cy="113" rx="10" ry="4" fill="currentColor" opacity="0.85"/>
+    svg: `<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="72" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="96" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M36 60 Q38 38 60 36 Q82 38 84 60 L82 80 Q60 76 38 80 Z"
+            fill="currentColor" opacity="0.58"/>
+      <ellipse cx="60" cy="95" rx="10" ry="5" fill="currentColor" opacity="0.85"/>
+      <path d="M52 100 Q50 118 53 138 Q58 134 60 138 Q62 134 67 138 Q70 118 68 100 Z"
+            fill="currentColor" opacity="0.68"/>
     </svg>`,
     formatos: ["oval", "alongado", "coracao", "redondo"],
     comprimentos: ["medio", "longo"],
@@ -73,7 +75,17 @@ export const PENTEADOS: Penteado[] = [
     id: "rabo-de-cavalo-alto",
     nome: "Rabo de cavalo alto",
     descricao: "Energético, levanta o rosto",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="24" ry="30" fill="currentColor" opacity="0.18"/><circle cx="60" cy="74" r="17" fill="currentColor" opacity="0.4"/><path d="M60 44 Q48 30 42 12 Q54 36 60 44" fill="currentColor" opacity="0.7"/></svg>`,
+    svg: `<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="114" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M36 78 Q38 56 60 54 Q82 56 84 78 L82 98 Q60 94 38 98 Z"
+            fill="currentColor" opacity="0.55"/>
+      <ellipse cx="60" cy="52" rx="10" ry="5" fill="currentColor" opacity="0.88"/>
+      <path d="M53 46 Q48 32 44 16 Q52 28 60 46"
+            fill="currentColor" opacity="0.72"/>
+      <path d="M67 46 Q72 32 76 16 Q68 28 60 46"
+            fill="currentColor" opacity="0.55"/>
+    </svg>`,
     formatos: ["redondo", "quadrado", "oval"],
     comprimentos: ["medio", "longo"],
     texturas: ["liso", "ondulado", "cacheado"],
@@ -140,12 +152,14 @@ export const PENTEADOS: Penteado[] = [
     id: "meio-preso",
     nome: "Meio preso",
     descricao: "Equilíbrio entre solto e arrumado",
-    svg: `<svg ${SVG_BASE_STYLE}>
-      <ellipse cx="60" cy="78" rx="26" ry="32" fill="currentColor" opacity="0.08"/>
-      <rect x="52" y="106" width="16" height="16" rx="4" fill="currentColor" opacity="0.06"/>
-      <path d="M34 75 L34 148 Q52 152 60 152 Q68 152 86 148 L86 75 Q60 80 34 75Z" fill="currentColor" opacity="0.45"/>
-      <path d="M38 65 Q40 42 60 40 Q80 42 82 65 Q70 70 60 68 Q50 70 38 65Z" fill="currentColor" opacity="0.65"/>
-      <ellipse cx="60" cy="67" rx="8" ry="4" fill="currentColor" opacity="0.85"/>
+    svg: `<svg viewBox="0 0 120 160" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="78" rx="22" ry="26" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="100" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M38 70 L38 142 Q52 148 60 148 Q68 148 82 142 L82 70 Q60 75 38 70Z"
+            fill="currentColor" opacity="0.42"/>
+      <path d="M40 60 Q42 40 60 38 Q78 40 80 60 Q70 65 60 63 Q50 65 40 60Z"
+            fill="currentColor" opacity="0.68"/>
+      <ellipse cx="60" cy="61" rx="9" ry="4" fill="currentColor" opacity="0.88"/>
     </svg>`,
     formatos: ["oval", "quadrado", "redondo", "coracao"],
     comprimentos: ["medio", "longo"],
