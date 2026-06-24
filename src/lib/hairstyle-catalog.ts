@@ -248,12 +248,13 @@ export const PENTEADOS: Penteado[] = [
     nome: "Puff alto",
     descricao: "Realça o cabelo natural, marcante",
     svg: `<svg ${SVG_BASE_STYLE}>
-      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.08"/>
-      <rect x="52" y="115" width="16" height="16" rx="4" fill="currentColor" opacity="0.06"/>
-      <ellipse cx="60" cy="48" rx="38" ry="30" fill="currentColor" opacity="0.65"/>
-      <ellipse cx="44" cy="42" rx="10" ry="8" fill="currentColor" opacity="0.20"/>
-      <ellipse cx="76" cy="42" rx="10" ry="8" fill="currentColor" opacity="0.20"/>
-      <ellipse cx="60" cy="30" rx="10" ry="8" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="60" cy="100" rx="22" ry="26" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="122" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <ellipse cx="60" cy="52" rx="40" ry="32" fill="currentColor" opacity="0.65"/>
+      <ellipse cx="38" cy="44" rx="14" ry="12" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="82" cy="44" rx="14" ry="12" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="60" cy="28" rx="14" ry="10" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="60" cy="68" rx="18" ry="8" fill="currentColor" opacity="0.30"/>
     </svg>`,
     formatos: ["oval", "alongado", "coracao"],
     comprimentos: ["curto", "medio", "longo"],
