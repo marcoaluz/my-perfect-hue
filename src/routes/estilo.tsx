@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { MobileShell, PageHeader } from "@/components/MobileShell";
@@ -598,7 +598,7 @@ function Estilo() {
 
             {/* PENTEADO */}
             <Card className="rounded-3xl p-5 mb-4 border-border/60 shadow-soft">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-1">
                 <h3 className="font-serif text-lg">💇 Penteado</h3>
                 <button
                   onClick={novasSugestoes}
@@ -607,6 +607,9 @@ function Estilo() {
                   <RefreshCw className="h-3 w-3" /> Outras
                 </button>
               </div>
+              <p className="text-[11px] text-muted-foreground mb-3">
+                Ilustração · foto real em breve
+              </p>
 
               {penteados.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
@@ -634,6 +637,31 @@ function Estilo() {
                   ))}
                 </div>
               )}
+
+              <div className="mt-4 rounded-2xl p-4 bg-lilac/10 border border-lilac/20">
+                <div className="flex items-start gap-3">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-lilac/20">
+                    <Sparkles className="h-4 w-4 text-lilac" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-medium text-lilac mb-1">
+                      Em breve: experimente na sua foto ✨
+                    </p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Nossa IA irá mostrar exatamente como cada penteado ficaria
+                      em você — com a sua cor de cabelo e formato de rosto real.
+                      Disponível em breve para assinantes Premium.
+                    </p>
+                    <Link
+                      to="/premium"
+                      className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-lilac hover:underline"
+                    >
+                      Saber mais sobre o Premium
+                      <ArrowRight className="h-3 w-3" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
 
               {penteadoEscolhido && (
                 <p className="text-xs text-muted-foreground mt-3 italic">

@@ -45,7 +45,7 @@ const BENEFICIOS_PREMIUM = [
 ];
 
 const BENEFICIOS_EM_BREVE = [
-  "✨ Penteado virtual na sua foto (IA)",
+  "✨ Veja como cada penteado fica em você — com sua cor de cabelo real",
   "👗 Experimente roupas virtualmente (IA)",
   "🎯 Score de harmonia do seu look",
 ];
@@ -140,6 +140,13 @@ export default function Premium() {
             </li>
           ))}
         </ul>
+        <div className="mt-4 rounded-2xl p-4 bg-lilac/10 border border-lilac/20">
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            🪄 Nossa IA vai fotografar virtualmente o penteado escolhido
+            em você, respeitando sua cor natural, textura e formato de rosto.
+            Como ter uma consultora de imagem no seu bolso.
+          </p>
+        </div>
         <p className="mt-4 text-xs text-muted-foreground">
           Assinantes Premium terão acesso antecipado quando lançar ✨
         </p>
