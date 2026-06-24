@@ -161,7 +161,6 @@ export const PENTEADOS: Penteado[] = [
             fill="currentColor" opacity="0.68"/>
       <ellipse cx="60" cy="61" rx="9" ry="4" fill="currentColor" opacity="0.88"/>
     </svg>`,
-    </svg>`,
     formatos: ["oval", "quadrado", "redondo", "coracao"],
     comprimentos: ["medio", "longo"],
     texturas: ["liso", "ondulado", "cacheado"],
