@@ -153,7 +153,19 @@ function ConsultasSalvas({
   );
 }
 
+function getJoiaImageUrl(metal: string): string {
+  const metalLower = (metal || "").toLowerCase();
+  if (metalLower.includes("prata") || metalLower.includes("branco")) {
+    return "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=200&q=80&fit=crop";
+  }
+  if (metalLower.includes("ros") || metalLower.includes("rosê")) {
+    return "https://images.unsplash.com/photo-1602751584552-8ba73aad10e1?w=200&q=80&fit=crop";
+  }
+  return "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=200&q=80&fit=crop";
+}
+
 function Estilo() {
+
   const { user, loading, profile } = useRequireAuth();
   const qc = useQueryClient();
 
@@ -574,7 +586,7 @@ function Estilo() {
                   Sem sugestões pra esses parâmetros. Tente "Outras".
                 </p>
               ) : (
-                <div className="grid grid-cols-3 gap-2">
+                <div className="grid grid-cols-3 gap-3">
                   {penteados.map((p) => (
                     <button
                       key={p.id}
@@ -586,9 +598,10 @@ function Estilo() {
                       }`}
                     >
                       <div
-                        className="aspect-square text-terracotta flex items-center justify-center"
+                        className="aspect-[3/4] mb-2 text-terracotta flex items-center justify-center"
                         dangerouslySetInnerHTML={{ __html: p.svg }}
                       />
+
                       <p className="text-[11px] mt-1 text-center leading-tight">{p.nome}</p>
                     </button>
                   ))}
@@ -658,10 +671,17 @@ function Estilo() {
               <Card className="rounded-3xl p-5 mb-4 border-border/60 shadow-soft">
                 <h3 className="font-serif text-lg mb-3">💎 Joias e acessórios</h3>
                 <div className="flex items-start gap-3">
-                  <div
-                    className="h-10 w-10 rounded-full shadow-sm shrink-0"
-                    style={{ background: joias.metal_hex }}
-                  />
+                  <div className="h-20 w-20 rounded-2xl overflow-hidden shadow-soft border border-white/60 shrink-0">
+                    <img
+                      src={getJoiaImageUrl(joias.metal)}
+                      alt={joias.metal}
+                      className="h-full w-full object-cover"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                        e.currentTarget.parentElement!.style.background = joias.metal_hex;
+                      }}
+                    />
+                  </div>
                   <div className="min-w-0">
                     <p className="text-sm font-medium">{joias.metal}</p>
                     <p className="text-xs text-muted-foreground">{joias.estilo}</p>
