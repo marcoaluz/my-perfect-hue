@@ -171,7 +171,16 @@ export const PENTEADOS: Penteado[] = [
     id: "pixie",
     nome: "Pixie cut",
     descricao: "Ousado, jovem, prático",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="26" ry="32" fill="currentColor" opacity="0.15"/><path d="M36 56 Q44 42 60 42 Q76 42 84 56 L82 74 L72 68 L60 74 L48 68 L38 74 Z" fill="currentColor" opacity="0.6"/></svg>`,
+    svg: `<svg ${SVG_BASE_STYLE}>
+      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="114" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M36 54 Q40 44 52 42 Q60 40 68 42 Q80 44 84 54 L86 70 L80 64 L72 72 L64 64 L56 72 L48 64 L40 72 L34 70 Z"
+            fill="currentColor" opacity="0.60"/>
+      <path d="M38 62 L38 86" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+      <path d="M82 62 L82 86" stroke="currentColor" stroke-width="3" stroke-linecap="round" opacity="0.25"/>
+      <path d="M46 52 L46 74" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.20"/>
+      <path d="M74 52 L74 74" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" opacity="0.20"/>
+    </svg>`,
     formatos: ["oval", "alongado", "coracao"],
     comprimentos: ["curto"],
     texturas: ["liso", "ondulado"],
@@ -181,7 +190,13 @@ export const PENTEADOS: Penteado[] = [
     id: "long-bob",
     nome: "Long bob (lob)",
     descricao: "Versátil, moderno, fica bem em tudo",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="26" ry="32" fill="currentColor" opacity="0.15"/><path d="M32 68 L32 116 L88 116 L88 68 Q88 48 60 48 Q32 48 32 68" fill="currentColor" opacity="0.55"/></svg>`,
+    svg: `<svg ${SVG_BASE_STYLE}>
+      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="114" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M32 72 Q34 46 60 44 Q86 46 88 72 L88 108 Q68 116 60 116 Q52 116 32 108 Z"
+            fill="currentColor" opacity="0.60"/>
+      <path d="M32 106 Q60 114 88 106" stroke="currentColor" stroke-width="1" fill="none" opacity="0.25"/>
+    </svg>`,
     formatos: ["oval", "redondo", "quadrado", "alongado", "coracao"],
     comprimentos: ["medio"],
     texturas: ["liso", "ondulado"],
@@ -212,16 +227,16 @@ export const PENTEADOS: Penteado[] = [
     nome: "Cachos definidos",
     descricao: "Volume natural valorizado",
     svg: `<svg ${SVG_BASE_STYLE}>
-      <ellipse cx="60" cy="82" rx="26" ry="32" fill="currentColor" opacity="0.08"/>
-      <rect x="52" y="110" width="16" height="16" rx="4" fill="currentColor" opacity="0.06"/>
-      <ellipse cx="60" cy="68" rx="36" ry="30" fill="currentColor" opacity="0.35"/>
-      <circle cx="36" cy="72" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="48" cy="84" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="36" cy="96" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="84" cy="72" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="72" cy="84" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="84" cy="96" r="7" fill="currentColor" opacity="0.55"/>
-      <circle cx="60" cy="105" r="7" fill="currentColor" opacity="0.55"/>
+      <ellipse cx="60" cy="95" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="118" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <ellipse cx="60" cy="72" rx="40" ry="34" fill="currentColor" opacity="0.30"/>
+      <circle cx="34" cy="70" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="48" cy="84" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="34" cy="98" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="86" cy="70" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="72" cy="84" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="86" cy="98" r="9" fill="currentColor" opacity="0.55"/>
+      <circle cx="60" cy="108" r="9" fill="currentColor" opacity="0.55"/>
     </svg>`,
     formatos: ["oval", "alongado", "coracao"],
     comprimentos: ["medio", "longo"],
@@ -233,12 +248,13 @@ export const PENTEADOS: Penteado[] = [
     nome: "Puff alto",
     descricao: "Realça o cabelo natural, marcante",
     svg: `<svg ${SVG_BASE_STYLE}>
-      <ellipse cx="60" cy="90" rx="24" ry="28" fill="currentColor" opacity="0.08"/>
-      <rect x="52" y="115" width="16" height="16" rx="4" fill="currentColor" opacity="0.06"/>
-      <ellipse cx="60" cy="48" rx="38" ry="30" fill="currentColor" opacity="0.65"/>
-      <ellipse cx="44" cy="42" rx="10" ry="8" fill="currentColor" opacity="0.20"/>
-      <ellipse cx="76" cy="42" rx="10" ry="8" fill="currentColor" opacity="0.20"/>
-      <ellipse cx="60" cy="30" rx="10" ry="8" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="60" cy="100" rx="22" ry="26" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="122" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <ellipse cx="60" cy="52" rx="40" ry="32" fill="currentColor" opacity="0.65"/>
+      <ellipse cx="38" cy="44" rx="14" ry="12" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="82" cy="44" rx="14" ry="12" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="60" cy="28" rx="14" ry="10" fill="currentColor" opacity="0.20"/>
+      <ellipse cx="60" cy="68" rx="18" ry="8" fill="currentColor" opacity="0.30"/>
     </svg>`,
     formatos: ["oval", "alongado", "coracao"],
     comprimentos: ["curto", "medio", "longo"],
@@ -269,7 +285,16 @@ export const PENTEADOS: Penteado[] = [
     id: "espace-coque",
     nome: "Space buns",
     descricao: "Divertido e jovial, com dois coques altos",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="24" ry="30" fill="currentColor" opacity="0.15"/><circle cx="60" cy="74" r="16" fill="currentColor" opacity="0.4"/><circle cx="38" cy="42" r="11" fill="currentColor" opacity="0.7"/><circle cx="82" cy="42" r="11" fill="currentColor" opacity="0.7"/></svg>`,
+    svg: `<svg ${SVG_BASE_STYLE}>
+      <ellipse cx="60" cy="95" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="118" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M36 80 Q38 58 60 56 Q82 58 84 80 L82 96 Q60 92 38 96 Z"
+            fill="currentColor" opacity="0.45"/>
+      <circle cx="36" cy="44" r="16" fill="currentColor" opacity="0.80"/>
+      <circle cx="84" cy="44" r="16" fill="currentColor" opacity="0.80"/>
+      <ellipse cx="30" cy="39" rx="5" ry="4" fill="white" opacity="0.20"/>
+      <ellipse cx="78" cy="39" rx="5" ry="4" fill="white" opacity="0.20"/>
+    </svg>`,
     formatos: ["oval", "redondo", "coracao"],
     comprimentos: ["medio", "longo"],
     texturas: ["liso", "ondulado", "cacheado"],
