@@ -285,7 +285,16 @@ export const PENTEADOS: Penteado[] = [
     id: "espace-coque",
     nome: "Space buns",
     descricao: "Divertido e jovial, com dois coques altos",
-    svg: `<svg ${SVG_BASE_STYLE}>${FACE_BG}<ellipse cx="60" cy="74" rx="24" ry="30" fill="currentColor" opacity="0.15"/><circle cx="60" cy="74" r="16" fill="currentColor" opacity="0.4"/><circle cx="38" cy="42" r="11" fill="currentColor" opacity="0.7"/><circle cx="82" cy="42" r="11" fill="currentColor" opacity="0.7"/></svg>`,
+    svg: `<svg ${SVG_BASE_STYLE}>
+      <ellipse cx="60" cy="95" rx="24" ry="28" fill="currentColor" opacity="0.07"/>
+      <rect x="53" y="118" width="14" height="14" rx="3" fill="currentColor" opacity="0.05"/>
+      <path d="M36 80 Q38 58 60 56 Q82 58 84 80 L82 96 Q60 92 38 96 Z"
+            fill="currentColor" opacity="0.45"/>
+      <circle cx="36" cy="44" r="16" fill="currentColor" opacity="0.80"/>
+      <circle cx="84" cy="44" r="16" fill="currentColor" opacity="0.80"/>
+      <ellipse cx="30" cy="39" rx="5" ry="4" fill="white" opacity="0.20"/>
+      <ellipse cx="78" cy="39" rx="5" ry="4" fill="white" opacity="0.20"/>
+    </svg>`,
     formatos: ["oval", "redondo", "coracao"],
     comprimentos: ["medio", "longo"],
     texturas: ["liso", "ondulado", "cacheado"],
