@@ -598,7 +598,7 @@ function Estilo() {
 
             {/* PENTEADO */}
             <Card className="rounded-3xl p-5 mb-4 border-border/60 shadow-soft">
-              <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center justify-between mb-1">
                 <h3 className="font-serif text-lg">💇 Penteado</h3>
                 <button
                   onClick={novasSugestoes}
@@ -607,6 +607,9 @@ function Estilo() {
                   <RefreshCw className="h-3 w-3" /> Outras
                 </button>
               </div>
+              <p className="text-[11px] text-muted-foreground mb-3">
+                Ilustração · foto real em breve
+              </p>
 
               {penteados.length === 0 ? (
                 <p className="text-sm text-muted-foreground">
